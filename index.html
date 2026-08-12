@@ -13,12 +13,12 @@
             theme: {
                 extend: {
                     colors: {
-                        brandCeleste: '#0284C7', // Sky 600
-                        brandCelesteLight: '#38BDF8', // Sky 400
-                        brandCelesteBg: '#F0F9FF', // Sky 50
-                        brandAzul: '#1E3A8A', // Blue 900
-                        brandAzulDark: '#0F172A', // Slate 900
-                        brandAccent: '#F59E0B' // Amber Accent
+                        brandCeleste: '#0284C7',
+                        brandCelesteLight: '#38BDF8',
+                        brandCelesteBg: '#F0F9FF',
+                        brandAzul: '#1E3A8A',
+                        brandAzulDark: '#0F172A',
+                        brandAccent: '#F59E0B'
                     }
                 }
             }
@@ -31,11 +31,9 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Header Fijo Superior (Azul Profundo a Celeste) -->
+    <!-- Header Fijo Superior -->
     <header class="bg-gradient-to-r from-brandAzul via-sky-900 to-brandCeleste text-white sticky top-0 z-40 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
-            
-            <!-- Logo e Identidad -->
             <div class="flex items-center space-x-3">
                 <div class="bg-white p-2.5 rounded-2xl shadow-md text-brandCeleste flex items-center justify-center">
                     <i class="fa-solid fa-bottle-water text-2xl"></i>
@@ -49,9 +47,7 @@
                 </div>
             </div>
 
-            <!-- Botones de Acción (Escritorio y Móvil) -->
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <!-- Visitas Badge -->
                 <div class="hidden sm:flex items-center bg-slate-900/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs text-slate-200">
                     <i class="fa-solid fa-eye text-sky-400 mr-2"></i>
                     <span><strong id="headerVisitCount">128</strong> Visitas</span>
@@ -81,7 +77,7 @@
         </div>
     </section>
 
-    <!-- Hero Banner Promocional para Escritorio -->
+    <!-- Hero Banner Promocional -->
     <section class="bg-gradient-to-r from-sky-900 via-brandAzul to-slate-900 text-white py-8 px-4 sm:px-6 lg:px-8 border-b border-sky-800">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="space-y-2 text-center md:text-left max-w-2xl">
@@ -92,7 +88,7 @@
                     Catálogo Digital de Snacks, Chocolates y Bebidas 24/7
                 </h2>
                 <p class="text-xs sm:text-sm text-sky-100">
-                    Consulta la disponibilidad de las 60 selecciones en tiempo real. Paga con billetes de $1, $5 y $10 recibiendo tu cambio en monedas, o solicita asistencia directa.
+                    Consulta la disponibilidad de las selecciones en tiempo real conectada directamente a la máquina.
                 </p>
             </div>
             <div class="flex items-center space-x-3 w-full md:w-auto justify-center">
@@ -105,14 +101,12 @@
         </div>
     </section>
 
-    <!-- Layout Principal Escritorio (2 Columnas: Barra Lateral + Área Principal) -->
+    <!-- Layout Principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-            <!-- BARRA LATERAL IZQUIERDA (Info Comercial y Ubicación) -->
+            <!-- BARRA LATERAL IZQUIERDA -->
             <aside class="lg:col-span-1 space-y-5">
-
-                <!-- Tarjeta 1: Métodos de Pago y Funcionamiento -->
                 <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
                     <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-brandCeleste flex items-center">
                         <i class="fa-solid fa-cash-register mr-2"></i> Métodos de Pago
@@ -126,80 +120,37 @@
                             <span><i class="fa-solid fa-coins text-amber-500 mr-2"></i>Dador de Vuelto</span>
                             <i class="fa-solid fa-check text-emerald-600"></i>
                         </li>
-                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
-                            <span><i class="fa-solid fa-bolt text-sky-500 mr-2"></i>Dispensado Rápido</span>
-                            <i class="fa-solid fa-check text-emerald-600"></i>
-                        </li>
                     </ul>
                 </div>
 
-                <!-- Tarjeta 2: Redes Sociales Oficiales -->
                 <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100 shadow-sm space-y-3 text-center">
                     <h3 class="font-bold text-brandAzul text-xs uppercase tracking-wider">Síguenos en Redes Sociales</h3>
                     <div class="flex items-center justify-center space-x-3">
-                        <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" rel="noopener noreferrer" 
-                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
+                        <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shadow">
                             <i class="fa-brands fa-facebook-f"></i>
                         </a>
-                        <a href="https://wa.me/593979724195" target="_blank" rel="noopener noreferrer" 
-                            class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center text-xl shadow transition transform hover:scale-105">
+                        <a href="https://wa.me/593979724195" target="_blank" class="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center text-xl shadow">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
-                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" 
-                            class="w-10 h-10 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
                     </div>
-                    <p class="text-[11px] text-slate-500">Publicamos promociones y nuevos productos</p>
                 </div>
 
-                <!-- Tarjeta 3: Ubicación Exacta y Mapa -->
-                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                UBICACIÓN MÁQUINA
-                            </span>
-                            <h4 class="font-bold text-slate-900 text-sm mt-1.5">Celica, Loja, Ecuador</h4>
-                            <p class="text-xs text-slate-500">Jaime Roldós y Eloy Alfaro</p>
-                            <p class="text-[10px] font-mono text-slate-400 mt-1">Coords: -4.102971, -79.955728</p>
-                        </div>
-                        <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
-                            <i class="fa-solid fa-location-dot text-xl"></i>
-                        </div>
-                    </div>
-
-                    <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
-                        class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
-                        <i class="fa-solid fa-map-location-dot text-sm"></i>
-                        <span>Cómo llegar en Google Maps</span>
-                    </a>
-                </div>
-
-                <!-- Tarjeta 4: Estadísticas de Visitas -->
                 <div class="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 shadow-sm space-y-2 text-center">
-                    <p class="text-[11px] text-slate-400">Contador de Visitas a la Web</p>
+                    <p class="text-[11px] text-slate-400">Contador de Visitas</p>
                     <p class="text-2xl font-extrabold text-brandCelesteLight" id="sidebarVisitCount">128</p>
-                    <p class="text-[10px] text-slate-500">Actualizado en tiempo real</p>
                 </div>
-
             </aside>
 
-            <!-- ÁREA PRINCIPAL DERECHA (Buscador, Filtros y Catálogo) -->
+            <!-- ÁREA PRINCIPAL DERECHA -->
             <section class="lg:col-span-3 space-y-5">
-
-                <!-- Barra Superior de Búsqueda y Filtros -->
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                    
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <!-- Buscador -->
                         <div class="relative w-full sm:w-80">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-                            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar por producto o selección (ej. 001, Oreo)..." 
-                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandCeleste text-xs text-slate-800">
+                            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar producto o código (001, Oreo...)" 
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brandCeleste">
                         </div>
 
-                        <!-- Indicadores de Stock -->
                         <div class="flex items-center space-x-4 text-xs text-slate-600 w-full sm:w-auto justify-between">
                             <div class="flex items-center space-x-1.5">
                                 <i class="fa-solid fa-layer-group text-brandCeleste"></i>
@@ -212,129 +163,55 @@
                         </div>
                     </div>
 
-                    <!-- Categorías (Pills) -->
-                    <div class="flex space-x-2 overflow-x-auto no-scrollbar pt-1" id="categoryContainer">
-                        <!-- Renderizado dinámico de categorías -->
-                    </div>
-
+                    <div class="flex space-x-2 overflow-x-auto no-scrollbar pt-1" id="categoryContainer"></div>
                 </div>
 
-                <!-- Grid de Productos (2 col en móvil, 3 en tablet, 4-5 en desktop) -->
+                <!-- Grid de Productos -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3.5" id="productGrid">
-                    <!-- Renderizado dinámico de productos desde Google Sheets -->
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200">
+                        <i class="fa-solid fa-spinner fa-spin text-brandCeleste text-3xl mb-2"></i>
+                        <p class="text-xs text-slate-600 font-medium">Cargando inventario desde Google Sheets...</p>
+                    </div>
                 </div>
-
             </section>
 
         </div>
     </div>
 
-    <!-- Footer General -->
-    <footer class="bg-brandAzulDark text-slate-400 text-center py-8 px-4 text-xs mt-10 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto space-y-3">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                <div class="text-left space-y-1">
-                    <p class="font-bold text-slate-200 text-sm">Agua Purificada Célica &copy; 2026</p>
-                    <p class="text-slate-400 text-xs">Acepta Billetes de $1, $5 y $10 con Dador de Vuelto en Monedas</p>
-                </div>
-                <div class="flex space-x-4 text-lg">
-                    <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://wa.me/593979724195" target="_blank" class="hover:text-emerald-400"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="https://www.instagram.com" target="_blank" class="hover:text-pink-400"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 pt-2">
-                <p>Ubicación: Jaime Roldós y Eloy Alfaro, Celica, Loja (-4.102971, -79.955728)</p>
-                <p>Soporte WhatsApp: 097 972 4195 | Visitas registradas: <strong id="footerVisitCount" class="text-sky-400">128</strong></p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODAL 1: Soporte y Reporte de Inconvenientes -->
+    <!-- Modales -->
     <div id="supportModal" class="fixed inset-0 bg-slate-900 bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative">
-            <button onclick="closeSupportModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="text-center space-y-1">
-                <div class="w-12 h-12 bg-sky-100 text-brandCeleste rounded-full flex items-center justify-center mx-auto text-xl">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">Reportar Inconveniente</h3>
-                <p class="text-xs text-slate-500">¿Inconveniente con tu vuelto o producto atascado? Te ayudamos de inmediato.</p>
-            </div>
-            
+            <button onclick="closeSupportModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-bold text-slate-900 text-base text-center">Reportar Inconveniente</h3>
             <form onsubmit="sendSupportWhatsApp(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Tu Nombre</label>
-                    <input type="text" id="suppName" required placeholder="Ej. Javier Ramón" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Número de Espiral / Selección</label>
-                    <input type="text" id="suppSpiral" placeholder="Ej. 001, 005, 054..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Tipo de Inconveniente</label>
-                    <select id="suppType" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
-                        <option value="No dio vuelto exacto">No me entregó el vuelto completo</option>
-                        <option value="Producto atascado">El producto quedó atascado</option>
-                        <option value="Billetes no aceptados">No aceptó billete ($1, $5 o $10)</option>
-                        <option value="Otro motivo">Otro asunto</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Detalles adicionales</label>
-                    <textarea id="suppDetail" rows="2" placeholder="Describe lo sucedido..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition shadow">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Enviar Mensaje a WhatsApp</span>
-                </button>
+                <input type="text" id="suppName" required placeholder="Tu Nombre" class="w-full px-3 py-2 border rounded-xl">
+                <input type="text" id="suppSpiral" placeholder="Código / Producto" class="w-full px-3 py-2 border rounded-xl">
+                <select id="suppType" class="w-full px-3 py-2 border rounded-xl">
+                    <option value="No dio vuelto exacto">No me entregó vuelto</option>
+                    <option value="Producto atascado">Producto atascado</option>
+                    <option value="Otro motivo">Otro asunto</option>
+                </select>
+                <textarea id="suppDetail" rows="2" placeholder="Detalle..." class="w-full px-3 py-2 border rounded-xl"></textarea>
+                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">Enviar WhatsApp</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 2: Sugerir Producto -->
     <div id="suggestModal" class="fixed inset-0 bg-slate-900 bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative">
-            <button onclick="closeSuggestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="text-center space-y-1">
-                <div class="w-12 h-12 bg-amber-100 text-brandAccent rounded-full flex items-center justify-center mx-auto text-xl">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">Sugerir Producto</h3>
-                <p class="text-xs text-slate-500">¿Qué snack o bebida te gustaría encontrar en la máquina?</p>
-            </div>
-            
+            <button onclick="closeSuggestModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-bold text-slate-900 text-base text-center">Sugerir Producto</h3>
             <form onsubmit="sendSuggestWhatsApp(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Nombre del Producto / Marca</label>
-                    <input type="text" id="sugProduct" required placeholder="Ej. Pringles, Gatorade, Galletas Tosh..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Categoría</label>
-                    <select id="sugCategory" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
-                        <option value="Snacks Salados">Snacks Salados</option>
-                        <option value="Chocolates y Dulces">Chocolates y Dulces</option>
-                        <option value="Galletas">Galletas</option>
-                        <option value="Bebidas">Bebidas</option>
-                        <option value="Saludable / Sin Azúcar">Saludable / Sin Azúcar</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition shadow">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Enviar Sugerencia</span>
-                </button>
+                <input type="text" id="sugProduct" required placeholder="Nombre de producto" class="w-full px-3 py-2 border rounded-xl">
+                <button type="submit" class="w-full bg-brandCeleste text-white font-bold py-2 rounded-xl">Enviar Sugerencia</button>
             </form>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC CONEXIÓN GOOGLE SHEETS EN TIEMPO REAL -->
+    <!-- SCRIPT DE CONEXIÓN ROBUSTA ROBUSTO -->
     <script>
         const SHEET_ID = '1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA';
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Hoja%201`;
+        const SHEET_JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
 
         const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
         let catalogData = [];
@@ -344,40 +221,48 @@
             initVisitCounter();
             renderCategories();
             fetchSheetData();
-            // Sincronización continua cada 30 segundos
             setInterval(fetchSheetData, 30000);
         });
 
         async function fetchSheetData() {
             try {
-                const response = await fetch(SHEET_URL);
-                const data = await response.text();
+                const response = await fetch(SHEET_JSON_URL);
+                const text = await response.text();
                 
-                const rows = data.split('\n').slice(1);
+                // Limpiar respuesta JSON de Google
+                const jsonText = text.substring(47, text.length - 2);
+                const json = JSON.parse(jsonText);
+                
+                const rows = json.table.rows;
                 catalogData = [];
 
-                rows.forEach(row => {
-                    const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
+                rows.forEach((row, index) => {
+                    if (!row.c) return;
                     
-                    const codigo = columns[0];
-                    const producto = columns[1];
-                    const cantidad = parseInt(columns[2]) || 0;
-                    let pvp = columns[8] || columns[5] || "$0.00";
+                    const codigo = row.c[0] ? (row.c[0].v || row.c[0].f || '') : '';
+                    const producto = row.c[1] ? row.c[1].v : '';
+                    const cantidad = row.c[2] ? parseInt(row.c[2].v || 0) : 0;
+                    
+                    // Obtener PVP de la Columna I (index 8) o F (index 5)
+                    let pvp = '';
+                    if (row.c[8] && row.c[8].v !== null) pvp = row.c[8].f || row.c[8].v;
+                    else if (row.c[5] && row.c[5].v !== null) pvp = row.c[5].f || row.c[5].v;
+                    else pvp = '$0.30';
 
-                    if (!pvp.includes("$") && !isNaN(parseFloat(pvp.replace(',', '.')))) {
-                        pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
-                    }
+                    if (typeof pvp === 'number') pvp = `$${pvp.toFixed(2)}`;
+                    else if (pvp && !pvp.toString().includes('$')) pvp = `$${pvp}`;
 
-                    if (codigo && producto && producto.trim() !== '') {
-                        const category = inferCategory(producto);
-                        const icon = inferIcon(producto, category);
+                    if (producto && producto.toString().trim() !== '') {
+                        const prodName = producto.toString().trim();
+                        const cat = inferCategory(prodName);
+                        const icon = inferIcon(prodName);
 
                         catalogData.push({
-                            id: codigo,
-                            name: producto,
+                            id: codigo || (index + 1).toString().padStart(3, '0'),
+                            name: prodName,
                             stock: cantidad,
                             price: pvp,
-                            cat: category,
+                            cat: cat,
                             icon: icon,
                             avail: cantidad > 0
                         });
@@ -386,7 +271,14 @@
 
                 renderProducts();
             } catch (error) {
-                console.error("Error al cargar datos desde Google Sheets:", error);
+                console.error("Error al cargar Google Sheets:", error);
+                document.getElementById("productGrid").innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-rose-200 text-rose-600 p-6">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                        <p class="text-xs font-bold">No se pudo conectar a la hoja de cálculo.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Asegúrate de haber ido a "Archivo > Compartir > Publicar en la web" en Google Sheets.</p>
+                    </div>
+                `;
             }
         }
 
@@ -400,7 +292,7 @@
             return "Snacks Salados";
         }
 
-        function inferIcon(name, category) {
+        function inferIcon(name) {
             const n = name.toLowerCase();
             if (n.includes('agua')) return "fa-bottle-water";
             if (n.includes('cola') || n.includes('cifrut') || n.includes('powerade') || n.includes('amper')) return "fa-bottle-droplet";
@@ -417,10 +309,8 @@
             let views = parseInt(localStorage.getItem('celica_vending_views') || '128');
             views += 1;
             localStorage.setItem('celica_vending_views', views.toString());
-            
             if (document.getElementById('headerVisitCount')) document.getElementById('headerVisitCount').innerText = views;
             if (document.getElementById('sidebarVisitCount')) document.getElementById('sidebarVisitCount').innerText = views;
-            if (document.getElementById('footerVisitCount')) document.getElementById('footerVisitCount').innerText = views;
         }
 
         function renderCategories() {
@@ -460,10 +350,7 @@
                 grid.innerHTML = `
                     <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-6">
                         <i class="fa-solid fa-magnifying-glass-minus text-sky-200 text-4xl mb-2"></i>
-                        <p class="text-xs font-bold text-slate-700">Sin resultados en este momento</p>
-                        <button onclick="openSuggestModal()" class="mt-3 bg-brandCeleste text-white px-4 py-2 rounded-xl text-xs font-bold shadow">
-                            Sugerir este producto
-                        </button>
+                        <p class="text-xs font-bold text-slate-700">Sin resultados</p>
                     </div>
                 `;
                 return;
@@ -494,7 +381,7 @@
                         </div>
                     </div>
 
-                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-3 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 hover:text-brandCeleste text-[10px] font-semibold py-1.5 rounded-xl flex items-center justify-center space-x-1 transition border border-slate-200">
+                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-3 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 text-[10px] font-semibold py-1.5 rounded-xl border border-slate-200">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>Reportar problema</span>
                     </button>
@@ -521,12 +408,7 @@
             const detail = document.getElementById("suppDetail").value;
 
             const phone = "593979724195";
-            const message = `*REPORTE DE MAQUINA VENDING*%0A` +
-                            `👤 *Nombre:* ${encodeURIComponent(name)}%0A` +
-                            `📍 *Espiral / Selección:* ${encodeURIComponent(spiral)}%0A` +
-                            `⚠️ *Inconveniente:* ${encodeURIComponent(type)}%0A` +
-                            `📝 *Detalles:* ${encodeURIComponent(detail || 'Sin detalle adicional')}`;
-
+            const message = `*REPORTE DE MAQUINA VENDING*%0A👤 *Nombre:* ${encodeURIComponent(name)}%0A📍 *Selección:* ${encodeURIComponent(spiral)}%0A⚠️ *Asunto:* ${encodeURIComponent(type)}%0A📝 *Detalles:* ${encodeURIComponent(detail)}`;
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
             closeSupportModal();
         }
@@ -534,13 +416,8 @@
         function sendSuggestWhatsApp(e) {
             e.preventDefault();
             const product = document.getElementById("sugProduct").value;
-            const category = document.getElementById("sugCategory").value;
-
             const phone = "593979724195";
-            const message = `*SUGERENCIA DE SNACK / BEBIDA*%0A` +
-                            `💡 *Producto Solicitado:* ${encodeURIComponent(product)}%0A` +
-                            `🏷️ *Categoría:* ${encodeURIComponent(category)}`;
-
+            const message = `*SUGERENCIA DE PRODUCTO*%0A💡 *Producto:* ${encodeURIComponent(product)}`;
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
             closeSuggestModal();
         }
