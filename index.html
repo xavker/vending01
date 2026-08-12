@@ -29,107 +29,224 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Header Fijo (Azul Profundo a Celeste) -->
-    <header class="bg-gradient-to-r from-brandAzul to-brandCeleste text-white sticky top-0 z-40 shadow-md">
-        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Header Fijo Superior (Azul Profundo a Celeste) -->
+    <header class="bg-gradient-to-r from-brandAzul via-sky-900 to-brandCeleste text-white sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            
+            <!-- Logo e Identidad -->
             <div class="flex items-center space-x-3">
-                <div class="bg-white p-2 rounded-full shadow-md text-brandCeleste">
-                    <i class="fa-solid fa-bottle-water text-xl"></i>
+                <div class="bg-white p-2.5 rounded-2xl shadow-md text-brandCeleste flex items-center justify-center">
+                    <i class="fa-solid fa-bottle-water text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base leading-tight tracking-wide">AGUA CÉLICA VENDING</h1>
+                    <h1 class="font-bold text-base sm:text-lg leading-tight tracking-wide">AGUA PURIFICADA CÉLICA</h1>
                     <p class="text-xs text-brandCelesteLight font-medium flex items-center mt-0.5">
-                        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping mr-1.5"></span>
-                        Servicio 24/7 Disponible
+                        <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping mr-1.5"></span>
+                        Máquina Vending 24/7 Operativa
                     </p>
                 </div>
             </div>
-            <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-900 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow transition transform active:scale-95">
-                <i class="fa-solid fa-headset mr-1.5"></i> Soporte
-            </button>
+
+            <!-- Botones de Acción (Escritorio y Móvil) -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Visitas Badge -->
+                <div class="hidden sm:flex items-center bg-slate-900/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs text-slate-200">
+                    <i class="fa-solid fa-eye text-sky-400 mr-2"></i>
+                    <span><strong id="headerVisitCount">128</strong> Visitas</span>
+                </div>
+
+                <button onclick="openSuggestModal()" class="hidden md:flex bg-white/10 hover:bg-white/20 text-white font-semibold px-3.5 py-2 rounded-xl text-xs items-center transition border border-white/20">
+                    <i class="fa-solid fa-lightbulb text-brandAccent mr-1.5"></i> Pedir Producto
+                </button>
+
+                <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center shadow-md transition transform active:scale-95">
+                    <i class="fa-solid fa-headset mr-1.5"></i> Soporte
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Banner de Información de Pago -->
-    <section class="bg-brandAzulDark text-white py-2 px-4 text-xs border-b border-slate-800">
-        <div class="max-w-md mx-auto flex items-center justify-between text-[11px] text-slate-300">
-            <span><i class="fa-solid fa-money-bill-wave text-brandCelesteLight mr-1"></i> Billetes $1 / $5</span>
-            <span><i class="fa-solid fa-coins text-brandAccent mr-1"></i> Dador de Vuelto</span>
-            <span><i class="fa-solid fa-box text-emerald-400 mr-1"></i> 60 Selecciones</span>
+    <!-- Banner Informativo Horizontal -->
+    <section class="bg-brandAzulDark text-white py-2.5 px-4 text-xs border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-slate-300">
+            <div class="flex items-center space-x-4">
+                <span><i class="fa-solid fa-money-bill-wave text-emerald-400 mr-1.5"></i> Billetes aceptados: <strong>$1, $5 y $10</strong></span>
+                <span class="hidden md:inline"><i class="fa-solid fa-coins text-brandAccent mr-1.5"></i> Dador automático de vuelto en monedas</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span><i class="fa-solid fa-location-dot text-sky-400 mr-1.5"></i> Celica, Loja (Jaime Roldós y Eloy Alfaro)</span>
+            </div>
         </div>
     </section>
 
-    <!-- Contenido Principal (Mobile-First Max-Width) -->
-    <main class="flex-grow max-w-md w-full mx-auto p-4 space-y-4">
-
-        <!-- Buscador Dinámico -->
-        <div class="relative">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar producto o espiral (ej. A1, KitKat, Agua)..." 
-                class="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandCeleste text-xs text-slate-800">
-        </div>
-
-        <!-- Categorías (Scroll Horizontal) -->
-        <div class="flex space-x-2 overflow-x-auto no-scrollbar py-0.5" id="categoryContainer">
-            <!-- Renderizado dinámico de categorías -->
-        </div>
-
-        <!-- Contador de Disponibilidad -->
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between text-xs text-slate-600">
-            <div class="flex items-center space-x-1.5">
-                <i class="fa-solid fa-layer-group text-brandCeleste"></i>
-                <span><strong id="totalProductsCount" class="text-slate-900">60</strong> Selecciones</span>
+    <!-- Hero Banner Promocional para Escritorio -->
+    <section class="bg-gradient-to-r from-sky-900 via-brandAzul to-slate-900 text-white py-8 px-4 sm:px-6 lg:px-8 border-b border-sky-800">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left max-w-2xl">
+                <span class="bg-sky-500/20 text-sky-300 border border-sky-400/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Servicio Automático en Celica
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    Catálogo Digital de Snacks, Chocolates y Bebidas 24/7
+                </h2>
+                <p class="text-xs sm:text-sm text-sky-100">
+                    Consulta la disponibilidad de las 60 selecciones en tiempo real. Paga con billetes de $1, $5 y $10 recibiendo tu cambio en monedas, o solicita asistencia directa.
+                </p>
             </div>
-            <div class="flex items-center space-x-1.5 text-emerald-600">
-                <i class="fa-solid fa-circle-check"></i>
-                <span><strong id="availableProductsCount">60</strong> En Stock</span>
+            <div class="flex items-center space-x-3 w-full md:w-auto justify-center">
+                <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
+                    class="bg-brandCeleste hover:bg-sky-500 text-white font-bold px-5 py-3 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg transition">
+                    <i class="fa-solid fa-map-location-dot text-base"></i>
+                    <span>Ver en Google Maps</span>
+                </a>
             </div>
-            <button onclick="openSuggestModal()" class="text-brandCeleste font-bold hover:underline flex items-center text-[11px]">
-                <i class="fa-solid fa-lightbulb text-brandAccent mr-1"></i> Pedir snack
-            </button>
         </div>
+    </section>
 
-        <!-- Catálogo de Productos (Grid 2 Columnas) -->
-        <div class="grid grid-cols-2 gap-3" id="productGrid">
-            <!-- Renderizado dinámico de productos -->
-        </div>
+    <!-- Layout Principal Escritorio (2 Columnas: Barra Lateral + Área Principal) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        <!-- Sección de Ubicación y Mapa Exacto -->
-        <section class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 mt-6">
-            <div class="flex items-start justify-between">
-                <div>
-                    <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        UBICACIÓN MÁQUINA VENDING
-                    </span>
-                    <h3 class="font-bold text-slate-900 text-sm mt-1">Celica, Loja, Ecuador</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Jaime Roldós y Eloy Alfaro</p>
-                    <p class="text-[11px] font-mono text-slate-400 mt-0.5">Coords: -4.102970, -79.955728</p>
+            <!-- BARRA LATERAL IZQUIERDA (Info Comercial y Ubicación) -->
+            <aside class="lg:col-span-1 space-y-5">
+
+                <!-- Tarjeta 1: Métodos de Pago y Funcionamiento -->
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-brandCeleste flex items-center">
+                        <i class="fa-solid fa-cash-register mr-2"></i> Métodos de Pago
+                    </h3>
+                    <ul class="text-xs space-y-2 text-slate-600">
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-money-bill text-emerald-500 mr-2"></i>Billetes $1, $5, $10</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-coins text-amber-500 mr-2"></i>Dador de Vuelto</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-bolt text-sky-500 mr-2"></i>Dispensado Rápido</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                    </ul>
                 </div>
-                <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
-                    <i class="fa-solid fa-location-dot text-xl"></i>
+
+                <!-- Tarjeta 2: Redes Sociales Oficiales -->
+                <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100 shadow-sm space-y-3 text-center">
+                    <h3 class="font-bold text-brandAzul text-xs uppercase tracking-wider">Síguenos en Redes Sociales</h3>
+                    <div class="flex items-center justify-center space-x-3">
+                        <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593979724195" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center text-xl shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Publicamos promociones y nuevos productos</p>
+                </div>
+
+                <!-- Tarjeta 3: Ubicación Exacta y Mapa -->
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                UBICACIÓN MÁQUINA
+                            </span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-1.5">Celica, Loja, Ecuador</h4>
+                            <p class="text-xs text-slate-500">Jaime Roldós y Eloy Alfaro</p>
+                            <p class="text-[10px] font-mono text-slate-400 mt-1">Coords: -4.102971, -79.955728</p>
+                        </div>
+                        <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
+                            <i class="fa-solid fa-location-dot text-xl"></i>
+                        </div>
+                    </div>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
+                        class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
+                        <i class="fa-solid fa-map-location-dot text-sm"></i>
+                        <span>Cómo llegar en Google Maps</span>
+                    </a>
+                </div>
+
+                <!-- Tarjeta 4: Estadísticas de Visitas -->
+                <div class="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 shadow-sm space-y-2 text-center">
+                    <p class="text-[11px] text-slate-400">Contador de Visitas a la Web</p>
+                    <p class="text-2xl font-extrabold text-brandCelesteLight" id="sidebarVisitCount">128</p>
+                    <p class="text-[10px] text-slate-500">Actualizado en tiempo real</p>
+                </div>
+
+            </aside>
+
+            <!-- ÁREA PRINCIPAL DERECHA (Buscador, Filtros y Catálogo) -->
+            <section class="lg:col-span-3 space-y-5">
+
+                <!-- Barra Superior de Búsqueda y Filtros -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <!-- Buscador -->
+                        <div class="relative w-full sm:w-80">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar por producto o espiral (ej. A1, KitKat)..." 
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandCeleste text-xs text-slate-800">
+                        </div>
+
+                        <!-- Indicadores de Stock -->
+                        <div class="flex items-center space-x-4 text-xs text-slate-600 w-full sm:w-auto justify-between">
+                            <div class="flex items-center space-x-1.5">
+                                <i class="fa-solid fa-layer-group text-brandCeleste"></i>
+                                <span><strong id="totalProductsCount" class="text-slate-900">60</strong> Selecciones</span>
+                            </div>
+                            <div class="flex items-center space-x-1.5 text-emerald-600">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span><strong id="availableProductsCount">60</strong> Disponibles</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categorías (Pills) -->
+                    <div class="flex space-x-2 overflow-x-auto no-scrollbar pt-1" id="categoryContainer">
+                        <!-- Renderizado dinámico de categorías -->
+                    </div>
+
+                </div>
+
+                <!-- Grid de Productos (2 col en móvil, 3 en tablet, 4-5 en desktop) -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3.5" id="productGrid">
+                    <!-- Renderizado dinámico de productos -->
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Footer General -->
+    <footer class="bg-brandAzulDark text-slate-400 text-center py-8 px-4 text-xs mt-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div class="text-left space-y-1">
+                    <p class="font-bold text-slate-200 text-sm">Agua Purificada Célica &copy; 2026</p>
+                    <p class="text-slate-400 text-xs">Acepta Billetes de $1, $5 y $10 con Dador de Vuelto en Monedas</p>
+                </div>
+                <div class="flex space-x-4 text-lg">
+                    <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://wa.me/593979724195" target="_blank" class="hover:text-emerald-400"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com" target="_blank" class="hover:text-pink-400"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
-
-            <!-- Botón Mapa Interactivo -->
-            <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
-                class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
-                <i class="fa-solid fa-map-location-dot text-sm"></i>
-                <span>Abrir en Google Maps / Cómo llegar</span>
-            </a>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-brandAzulDark text-slate-400 text-center py-6 px-4 text-xs mt-6 border-t border-slate-800">
-        <div class="max-w-md mx-auto space-y-2">
-            <p class="font-semibold text-slate-200">Agua Purificada Célica &copy; 2026</p>
-            <p class="text-slate-400">Coordenadas: -4.102971, -79.955728 | Celica - Ecuador</p>
-            <p class="text-brandCelesteLight font-medium">
-                <i class="fa-brands fa-whatsapp mr-1 text-emerald-400"></i>Soporte WhatsApp: 097 972 4195
-            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 pt-2">
+                <p>Ubicación: Jaime Roldós y Eloy Alfaro, Celica, Loja (-4.102971, -79.955728)</p>
+                <p>Soporte WhatsApp: 097 972 4195 | Visitas registradas: <strong id="footerVisitCount" class="text-sky-400">128</strong></p>
+            </div>
         </div>
     </footer>
 
@@ -161,7 +278,7 @@
                     <select id="suppType" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
                         <option value="No dio vuelto exacto">No me entregó el vuelto completo</option>
                         <option value="Producto atascado">El producto quedó atascado</option>
-                        <option value="Billetes no aceptados">No aceptó billete o moneda</option>
+                        <option value="Billetes no aceptados">No aceptó billete ($1, $5 o $10)</option>
                         <option value="Otro motivo">Otro asunto</option>
                     </select>
                 </div>
@@ -295,9 +412,20 @@
         let currentCategory = "Todas";
 
         document.addEventListener("DOMContentLoaded", () => {
+            initVisitCounter();
             renderCategories();
             renderProducts();
         });
+
+        function initVisitCounter() {
+            let views = parseInt(localStorage.getItem('celica_vending_views') || '125');
+            views += 1;
+            localStorage.setItem('celica_vending_views', views.toString());
+            
+            if (document.getElementById('headerVisitCount')) document.getElementById('headerVisitCount').innerText = views;
+            if (document.getElementById('sidebarVisitCount')) document.getElementById('sidebarVisitCount').innerText = views;
+            if (document.getElementById('footerVisitCount')) document.getElementById('footerVisitCount').innerText = views;
+        }
 
         function renderCategories() {
             const container = document.getElementById("categoryContainer");
@@ -306,7 +434,7 @@
                     class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition shadow-sm ${
                         currentCategory === cat 
                         ? 'bg-brandCeleste text-white' 
-                        : 'bg-white text-slate-600 hover:bg-sky-50 border border-slate-200'
+                        : 'bg-slate-50 text-slate-600 hover:bg-sky-50 border border-slate-200'
                     }">
                     ${cat}
                 </button>
@@ -334,10 +462,10 @@
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-2 text-center py-10 bg-white rounded-2xl border border-slate-200 p-4">
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-6">
                         <i class="fa-solid fa-magnifying-glass-minus text-sky-200 text-4xl mb-2"></i>
                         <p class="text-xs font-bold text-slate-700">Sin resultados para tu búsqueda</p>
-                        <button onclick="openSuggestModal()" class="mt-3 bg-brandCeleste text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">
+                        <button onclick="openSuggestModal()" class="mt-3 bg-brandCeleste text-white px-4 py-2 rounded-xl text-xs font-bold shadow">
                             Sugerir este producto
                         </button>
                     </div>
@@ -346,7 +474,7 @@
             }
 
             grid.innerHTML = filtered.map(p => `
-                <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex flex-col justify-between relative hover:border-sky-300 transition">
+                <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col justify-between relative hover:border-sky-300 hover:shadow-md transition">
                     <div class="flex items-center justify-between mb-2">
                         <span class="bg-brandCeleste text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm">
                             Espiral ${p.id}
@@ -365,7 +493,7 @@
                         <p class="text-[10px] text-slate-400 mt-0.5">${p.cat}</p>
                     </div>
 
-                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-2.5 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 hover:text-brandCeleste text-[10px] font-semibold py-1.5 rounded-xl flex items-center justify-center space-x-1 transition border border-slate-200">
+                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-3 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 hover:text-brandCeleste text-[10px] font-semibold py-1.5 rounded-xl flex items-center justify-center space-x-1 transition border border-slate-200">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>Reportar problema</span>
                     </button>
