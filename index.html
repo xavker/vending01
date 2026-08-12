@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agua Purificada Célica | Máquina Vending 24/7</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandRed: '#D32F2F',
+                        brandDark: '#1F2937',
+                        brandYellow: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- Header Fijo -->
+    <header class="bg-brandRed text-white sticky top-0 z-40 shadow-lg">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white p-2 rounded-full shadow text-brandRed">
+                    <i class="fa-solid fa-bottle-water text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">AGUA CÉLICA VENDING</h1>
+                    <p class="text-xs text-brandYellow font-medium"><i class="fa-solid fa-bolt mr-1"></i>Servicio 24 Horas / 7 Días</p>
+                </div>
+            </div>
+            <button onclick="openSupportModal()" class="bg-brandYellow hover:bg-yellow-500 text-gray-900 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center shadow transition">
+                <i class="fa-solid fa-headset mr-1.5"></i> Soporte
+            </button>
+        </div>
+    </header>
+
+    <!-- Banner de Estado e Instrucciones de Pago -->
+    <section class="bg-gray-900 text-white py-2.5 px-4 text-xs">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <span class="flex items-center text-green-400 font-medium">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-ping mr-2"></span>
+                Máquina Operativa
+            </span>
+            <span class="text-gray-300">
+                <i class="fa-solid fa-money-bill-wave text-brandYellow mr-1"></i> Billetes $1 / $5 y Monedas
+            </span>
+        </div>
+    </section>
+
+    <!-- Contenido Principal (Mobile-First Max-Width) -->
+    <main class="flex-grow max-w-md w-full mx-auto p-4 space-y-4">
+
+        <!-- Buscador -->
+        <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400"></i>
+            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar por producto o espiral (ej. A1, KitKat)..." 
+                class="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandRed text-sm">
+        </div>
+
+        <!-- Categorías (Scroll Horizontal) -->
+        <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1" id="categoryContainer">
+            <!-- Renderizado dinámico de categorías -->
+        </div>
+
+        <!-- Estadísticas Rápidas de la Máquina -->
+        <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between text-xs text-gray-600">
+            <div><i class="fa-solid fa-cubes text-brandRed mr-1"></i> <span id="totalProductsCount">60</span> Productos</div>
+            <div><i class="fa-solid fa-check-circle text-green-600 mr-1"></i> <span id="availableProductsCount">60</span> Disponibles</div>
+            <button onclick="openSuggestModal()" class="text-brandRed font-bold hover:underline">
+                <i class="fa-solid fa-lightbulb mr-1"></i>Sugerir producto
+            </button>
+        </div>
+
+        <!-- Catálogo de Productos (Grid Responsivo 2 columnas en móvil) -->
+        <div class="grid grid-cols-2 gap-3" id="productGrid">
+            <!-- Renderizado dinámico de productos -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 text-center py-6 px-4 text-xs mt-6 border-t border-gray-800">
+        <div class="max-w-md mx-auto space-y-2">
+            <p class="font-semibold text-gray-300">Agua Purificada Célica &copy; 2026</p>
+            <p>Ubicación: Jaime Roldós y Eloy Alfaro, Celica, Loja, Ecuador</p>
+            <p class="text-brandYellow"><i class="fa-brands fa-whatsapp mr-1"></i>Atención Directa: 097 972 4195</p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Soporte y Reporte de Inconvenientes -->
+    <div id="supportModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative animate-fade-in">
+            <button onclick="closeSupportModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center space-y-1">
+                <div class="w-12 h-12 bg-red-100 text-brandRed rounded-full flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Reportar Inconveniente</h3>
+                <p class="text-xs text-gray-500">¿Problemas con tu vuelto o producto atascado? Te ayudamos de inmediato.</p>
+            </div>
+            
+            <form id="supportForm" onsubmit="sendSupportWhatsApp(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Tu Nombre</label>
+                    <input type="text" id="suppName" required placeholder="Ej. Javier Ramón" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Número de Espiral / Selección</label>
+                    <input type="text" id="suppSpiral" placeholder="Ej. A1, B4, F10..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Tipo de Problema</label>
+                    <select id="suppType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none">
+                        <option value="No dio vuelto exacto">No me entregó el vuelto completo</option>
+                        <option value="Producto atascado">El producto quedó atascado</option>
+                        <option value="Billetes no aceptados">No aceptó billete o moneda</option>
+                        <option value="Otro motivo">Otro inconveniente</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Detalle adicional</label>
+                    <textarea id="suppDetail" rows="2" placeholder="Describe brevemente lo ocurrido..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition shadow">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Enviar a WhatsApp Directo</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Sugerir Producto -->
+    <div id="suggestModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative animate-fade-in">
+            <button onclick="closeSuggestModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center space-y-1">
+                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Sugerir Nuevo Producto</h3>
+                <p class="text-xs text-gray-500">¿Qué snack o bebida te gustaría ver en la máquina?</p>
+            </div>
+            
+            <form onsubmit="sendSuggestWhatsApp(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Nombre del Producto / Marca</label>
+                    <input type="text" id="sugProduct" required placeholder="Ej. Pringles Cebolla, Gatorade, Galletas..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Categoría</label>
+                    <select id="sugCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandRed outline-none">
+                        <option value="Snacks Salados">Snacks Salados</option>
+                        <option value="Chocolates y Dulces">Chocolates y Dulces</option>
+                        <option value="Galletas">Galletas</option>
+                        <option value="Bebidas">Bebidas</option>
+                        <option value="Saludable / Sin Azúcar">Saludable / Sin Azúcar</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-brandRed hover:bg-red-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition shadow">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Enviar Sugerencia</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Generación de los 60 productos distribuidos en 6 filas (A, B, C, D, E, F) x 10 columnas
+        const categories = ["Todas", "Chocolates", "Snacks Salados", "Galletas", "Bebidas", "Saludable"];
+        
+        const catalogData = [
+            // Fila A: Chocolates y Dulces
+            { id: "A1", name: "KitKat 4 Barra 41.5g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-cookie-bite" },
+            { id: "A2", name: "KitKat Chunky 40g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-cookie-bite" },
+            { id: "A3", name: "M&M Mani 49.3g", cat: "Chocolates", price: 1.00, avail: true, icon: "fa-cookie" },
+            { id: "A4", name: "M&M Chocolate 47.9g", cat: "Chocolates", price: 1.00, avail: true, icon: "fa-cookie" },
+            { id: "A5", name: "Snickers 52.7g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-candy-bar" },
+            { id: "A6", name: "Milky Way 52.2g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-candy-bar" },
+            { id: "A7", name: "Chocolatina Jet", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-box" },
+            { id: "A8", name: "Choco Maní Nestlé", cat: "Chocolates", price: 0.75, avail: true, icon: "fa-cookie-bite" },
+            { id: "A9", name: "Tango Chocolate", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-cookie-bite" },
+            { id: "A10", name: "Ferrero Rocher T3", cat: "Chocolates", price: 2.00, avail: true, icon: "fa-gem" },
+
+            // Fila B: Galletas y Chocolates
+            { id: "B1", name: "Oreo Paquete 4U", cat: "Galletas", price: 0.50, avail: true, icon: "fa-cookie" },
+            { id: "B2", name: "Oreo Doble Crema", cat: "Galletas", price: 0.60, avail: true, icon: "fa-cookie" },
+            { id: "B3", name: "Club Social Original", cat: "Galletas", price: 0.50, avail: true, icon: "fa-square" },
+            { id: "B4", name: "Ritz Saladas 3U", cat: "Galletas", price: 0.50, avail: true, icon: "fa-circle" },
+            { id: "B5", name: "Wafer Plazero Vainilla", cat: "Galletas", price: 0.40, avail: true, icon: "fa-layer-group" },
+            { id: "B6", name: "Wafer Plazero Chocolate", cat: "Galletas", price: 0.40, avail: true, icon: "fa-layer-group" },
+            { id: "B7", name: "Amor Frutilla Wafer", cat: "Galletas", price: 0.50, avail: true, icon: "fa-heart" },
+            { id: "B8", name: "Galleta Chiky Chocolate", cat: "Galletas", price: 0.50, avail: true, icon: "fa-cookie-bite" },
+            { id: "B9", name: "Ducales Paquete Roscas", cat: "Galletas", price: 0.60, avail: true, icon: "fa-star" },
+            { id: "B10", name: "Galleta Tosh Miel y Avena", cat: "Saludable", price: 0.60, avail: true, icon: "fa-wheat-awn" },
+
+            // Fila C: Snacks Salados / Papitas
+            { id: "C1", name: "Doritos Nacho Cheese", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-play" },
+            { id: "C2", name: "Cheetos Queso 35g", cat: "Snacks Salados", price: 0.60, avail: true, icon: "fa-cheese" },
+            { id: "C3", name: "Ruffles Onduladas", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-lines-leaning" },
+            { id: "C4", name: "Papas Lays Clásicas", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-bowl-food" },
+            { id: "C5", name: "Pringles Original 40g", cat: "Snacks Salados", price: 1.50, avail: true, icon: "fa-drum" },
+            { id: "C6", name: "Pringles Queso 40g", cat: "Snacks Salados", price: 1.50, avail: true, icon: "fa-drum" },
+            { id: "C7", name: "Chifle Plátano Salado", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-stroopwafel" },
+            { id: "C8", name: "Chifle Plátano Dulce", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-stroopwafel" },
+            { id: "C9", name: "Tostado Con Sal", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-seedling" },
+            { id: "C10", name: "Maní Salado Frito 50g", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-pills" },
+
+            // Fila D: Snacks Salados y Frutos Secos
+            { id: "D1", name: "Maní Con Pasas 50g", cat: "Saludable", price: 0.60, avail: true, icon: "fa-pills" },
+            { id: "D2", name: "Kachitos Queso", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-cheese" },
+            { id: "D3", name: "Tostitos Queso", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-border-all" },
+            { id: "D4", name: "Barra de Cereal Tosh", cat: "Saludable", price: 0.75, avail: true, icon: "fa-sheet-plastic" },
+            { id: "D5", name: "Barra Granola Miel", cat: "Saludable", price: 0.60, avail: true, icon: "fa-wheat-awn" },
+            { id: "D6", name: "Caramelos Tic Tac Menta", cat: "Chocolates", price: 0.60, avail: true, icon: "fa-box-tissue" },
+            { id: "D7", name: "Chicles Trident Menta", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-box" },
+            { id: "D8", name: "Gominolas Ambrosoli", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-shapes" },
+            { id: "D9", name: "Papas Ruffles Picante", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-pepper-hot" },
+            { id: "D10", name: "Doritos Flamin Hot", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-fire" },
+
+            // Fila E: Bebidas (Botellas y Latas)
+            { id: "E1", name: "Agua Purificada Célica 600ml", cat: "Bebidas", price: 0.50, avail: true, icon: "fa-bottle-water" },
+            { id: "E2", name: "Agua Purificada Célica 1 Litro", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-bottle-water" },
+            { id: "E3", name: "Coca-Cola Original 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
+            { id: "E4", name: "Coca-Cola Sin Azúcar 500ml", cat: "Saludable", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
+            { id: "E5", name: "Sprite 500ml Botella", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
+            { id: "E6", name: "Fanta Naranja 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
+            { id: "E7", name: "Fioravanti Frutilla 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
+            { id: "E8", name: "Gatorade Tropical 500ml", cat: "Bebidas", price: 1.25, avail: true, icon: "fa-bolt-lightning" },
+            { id: "E9", name: "Powerade Azul 500ml", cat: "Bebidas", price: 1.00, avail: true, icon: "fa-bolt" },
+            { id: "E10", name: "Agua Con Gas Dasani 500ml", cat: "Bebidas", price: 0.60, avail: true, icon: "fa-glass-water" },
+
+            // Fila F: Bebidas y Energizantes
+            { id: "F1", name: "Agua Purificada Célica Con Llave", cat: "Bebidas", price: 1.50, avail: true, icon: "fa-faucet-drip" },
+            { id: "F2", name: "Té Fuze Tea Durazno 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-whiskey-glass" },
+            { id: "F3", name: "Té Fuze Tea Limón 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-whiskey-glass" },
+            { id: "F4", name: "Monster Energy 473ml", cat: "Bebidas", price: 2.25, avail: true, icon: "fa-bolt" },
+            { id: "F5", name: "Red Bull Energy 250ml", cat: "Bebidas", price: 2.50, avail: true, icon: "fa-bolt" },
+            { id: "F6", name: "Vive 100 Energizante 240ml", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-battery-full" },
+            { id: "F7", name: "Jugo Del Valle Durazno", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-wine-bottle" },
+            { id: "F8", name: "Jugo Del Valle Manzana", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-wine-bottle" },
+            { id: "F9", name: "Bebida Láctea Chocolate", cat: "Bebidas", price: 0.80, avail: true, icon: "fa-cow" },
+            { id: "F10", name: "Agua Purificada Célica 600ml Fria", cat: "Bebidas", price: 0.50, avail: true, icon: "fa-snowflake" }
+        ];
+
+        let currentCategory = "Todas";
+
+        // Inicializar Interfaz
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCategories();
+            renderProducts();
+        });
+
+        // Render Categorías
+        function renderCategories() {
+            const container = document.getElementById("categoryContainer");
+            container.innerHTML = categories.map(cat => `
+                <button onclick="selectCategory('${cat}')" 
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition shadow-sm ${
+                        currentCategory === cat 
+                        ? 'bg-brandRed text-white' 
+                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                    }">
+                    ${cat}
+                </button>
+            `).join("");
+        }
+
+        // Seleccionar Categoría
+        function selectCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            renderProducts();
+        }
+
+        // Render Productos
+        function renderProducts() {
+            const grid = document.getElementById("productGrid");
+            const searchVal = document.getElementById("searchInput").value.toLowerCase().trim();
+
+            const filtered = catalogData.filter(p => {
+                const matchesCat = currentCategory === "Todas" || p.cat === currentCategory;
+                const matchesSearch = p.name.toLowerCase().includes(searchVal) || p.id.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            document.getElementById("totalProductsCount").innerText = catalogData.length;
+            document.getElementById("availableProductsCount").innerText = filtered.filter(p => p.avail).length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-2 text-center py-10 bg-white rounded-2xl border border-gray-200 p-4">
+                        <i class="fa-solid fa-face-frown text-gray-300 text-4xl mb-2"></i>
+                        <p class="text-sm font-bold text-gray-700">No se encontraron productos</p>
+                        <p class="text-xs text-gray-500 mt-1">Prueba con otra búsqueda o pide que lo agreguemos.</p>
+                        <button onclick="openSuggestModal()" class="mt-3 bg-brandRed text-white px-3 py-1.5 rounded-lg text-xs font-bold">
+                            Sugerir este producto
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex flex-col justify-between relative hover:shadow-md transition">
+                    <!-- Badge Espiral -->
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-brandRed text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm">
+                            Espiral ${p.id}
+                        </span>
+                        <span class="text-xs font-extrabold text-brandDark">
+                            $${p.price.toFixed(2)}
+                        </span>
+                    </div>
+
+                    <!-- Icono / Placeholder Imagen -->
+                    <div class="my-3 text-center py-4 bg-gray-50 rounded-lg text-brandRed">
+                        <i class="fa-solid ${p.icon} text-3xl"></i>
+                    </div>
+
+                    <!-- Info Producto -->
+                    <div>
+                        <h4 class="font-bold text-xs text-gray-900 line-clamp-2 leading-tight">${p.name}</h4>
+                        <p class="text-[10px] text-gray-400 mt-0.5">${p.cat}</p>
+                    </div>
+
+                    <!-- Botón Reporte Rápido -->
+                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-3 w-full bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-brandRed text-[10px] font-semibold py-1.5 rounded-lg flex items-center justify-center space-x-1 transition border border-gray-200">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Reportar problema</span>
+                    </button>
+                </div>
+            `).join("");
+        }
+
+        // Filtro de búsqueda
+        function filterProducts() {
+            renderProducts();
+        }
+
+        // Abrir y cerrar modals
+        function openSupportModal() { document.getElementById("supportModal").classList.remove("hidden"); }
+        function closeSupportModal() { document.getElementById("supportModal").classList.add("hidden"); }
+        function openSuggestModal() { document.getElementById("suggestModal").classList.remove("hidden"); }
+        function closeSuggestModal() { document.getElementById("suggestModal").classList.add("hidden"); }
+
+        // Reportar producto específico
+        function reportItem(id, name) {
+            document.getElementById("suppSpiral").value = `${id} - ${name}`;
+            openSupportModal();
+        }
+
+        // Enviar Soporte a WhatsApp
+        function sendSupportWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById("suppName").value;
+            const spiral = document.getElementById("suppSpiral").value;
+            const type = document.getElementById("suppType").value;
+            const detail = document.getElementById("suppDetail").value;
+
+            const phone = "593979724195";
+            const message = `*REPORTE DE MAQUINA VENDING*%0A` +
+                            `👤 *Nombre:* ${encodeURIComponent(name)}%0A` +
+                            `📍 *Espiral / Selección:* ${encodeURIComponent(spiral)}%0A` +
+                            `⚠️ *Inconveniente:* ${encodeURIComponent(type)}%0A` +
+                            `📝 *Detalles:* ${encodeURIComponent(detail || 'Sin detalle adicional')}`;
+
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+            closeSupportModal();
+        }
+
+        // Enviar Sugerencia a WhatsApp
+        function sendSuggestWhatsApp(e) {
+            e.preventDefault();
+            const product = document.getElementById("sugProduct").value;
+            const category = document.getElementById("sugCategory").value;
+
+            const phone = "593979724195";
+            const message = `*SUGERENCIA DE SNACK / BEBIDA*%0A` +
+                            `💡 *Producto Solicitado:* ${encodeURIComponent(product)}%0A` +
+                            `🏷️ *Categoría:* ${encodeURIComponent(category)}`;
+
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+            closeSuggestModal();
+        }
+    </script>
+</body>
+</html>
