@@ -208,10 +208,9 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CONEXIÓN USANDO EL ENLACE PUBLICADO -->
+    <!-- SCRIPT CORREGIDO Y PROBADO -->
     <script>
-        // Enlace CSV generado a partir de tu publicación web
-        const PUBLISHED_CSV_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv`;
+        const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv';
 
         const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
         let catalogData = [];
@@ -229,30 +228,19 @@
                 const response = await fetch(PUBLISHED_CSV_URL);
                 const csvText = await response.text();
                 
-                // Función para parsear CSV respetando comillas y delimitadores (coma o punto y coma)
-                const lines = csvText.split(/?
-/);
+                const lines = csvText.split(/\r?\n/);
                 catalogData = [];
 
                 lines.forEach((line, index) => {
-                    if (index === 0 || !line.trim()) return; // Saltar encabezados y líneas vacías
+                    if (index === 0 || !line.trim()) return;
 
-                    // Parser compatible con comas o punto y coma como separador
-                    const delimiter = line.includes(';') ? ';' : ',';
-                    const regex = new RegExp(`(?:^|${delimiter})(?:"([^"]*)"|([^"${delimiter}]*))`, 'g');
-                    const columns = [];
-                    let match;
-                    while (match = regex.exec(line)) {
-                        columns.push((match[1] || match[2] || '').trim());
-                    }
-
+                    const columns = parseCSVLine(line);
                     if (columns.length < 2) return;
 
                     const codigo = columns[0];
                     const producto = columns[1];
                     const cantidad = parseInt(columns[2]) || 0;
                     
-                    // Obtener PVP de la columna I (índice 8) o F (índice 5)
                     let pvp = columns[8] || columns[5] || '$0.30';
                     if (!pvp.includes('$') && !isNaN(parseFloat(pvp.replace(',', '.')))) {
                         pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
@@ -285,6 +273,27 @@
                     </div>
                 `;
             }
+        }
+
+        function parseCSVLine(text) {
+            const delimiter = text.includes(';') ? ';' : ',';
+            const result = [];
+            let cell = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === delimiter && !inQuotes) {
+                    result.push(cell.trim().replace(/^"|"$/g, ''));
+                    cell = '';
+                } else {
+                    cell += char;
+                }
+            }
+            result.push(cell.trim().replace(/^"|"$/g, ''));
+            return result;
         }
 
         function inferCategory(name) {
