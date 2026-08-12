@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content_debug = """<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -208,7 +208,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CORREGIDO CON SOPORTE PARA COLUMNA H (LOGO) Y REVERSO A ICONO -->
+    <!-- SCRIPT DINÁMICO DE DETECCIÓN INTELIGENTE DE COLUMNAS -->
     <script>
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv';
 
@@ -228,24 +228,41 @@
                 const response = await fetch(PUBLISHED_CSV_URL);
                 const csvText = await response.text();
                 
-                const lines = csvText.split(/?
-/);
+                const lines = csvText.split(/\r?\n/);
                 catalogData = [];
+
+                if (lines.length < 2) return;
+
+                // Detectar los índices exactos de las columnas desde el encabezado (Línea 0)
+                const headerCols = parseCSVLine(lines[0]).map(c => c.toLowerCase().trim());
+                
+                let idxCodigo = headerCols.findIndex(c => c.includes('codigo') || c.includes('código'));
+                let idxProducto = headerCols.findIndex(c => c.includes('producto'));
+                let idxCantidad = headerCols.findIndex(c => c.includes('cantidad'));
+                let idxLogo = headerCols.findIndex(c => c.includes('logo') || c.includes('imagen') || c.includes('foto'));
+                let idxPvp = headerCols.findIndex(c => c === 'pvp' || c.includes('venta al publico') || c.includes('total venta'));
+
+                // Fallbacks si no encuentra el encabezado explícito
+                if (idxCodigo === -1) idxCodigo = 0;
+                if (idxProducto === -1) idxProducto = 1;
+                if (idxCantidad === -1) idxCantidad = 2;
+                if (idxLogo === -1) idxLogo = 7; // Columna H por defecto
+                if (idxPvp === -1) idxPvp = 8;  // Columna I por defecto
 
                 lines.forEach((line, index) => {
                     if (index === 0 || !line.trim()) return;
 
                     const columns = parseCSVLine(line);
-                    if (columns.length < 2) return;
+                    if (columns.length <= idxProducto) return;
 
-                    const codigo = columns[0];
-                    const producto = columns[1];
-                    const cantidad = parseInt(columns[2]) || 0;
+                    const codigo = columns[idxCodigo] || '';
+                    const producto = columns[idxProducto] || '';
+                    const cantidad = parseInt(columns[idxCantidad]) || 0;
                     
-                    // Columna H (index 7): URL o identificador del LOGO
-                    const logoUrl = columns[7] ? columns[7].trim() : '';
+                    let logoUrl = columns[idxLogo] ? columns[idxLogo].trim() : '';
+                    logoUrl = convertImageUrl(logoUrl);
                     
-                    let pvp = columns[8] || columns[5] || '$0.30';
+                    let pvp = columns[idxPvp] || '$0.30';
                     if (!pvp.includes('$') && !isNaN(parseFloat(pvp.replace(',', '.')))) {
                         pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
                     }
@@ -278,6 +295,28 @@
                     </div>
                 `;
             }
+        }
+
+        function convertImageUrl(url) {
+            if (!url || url === '0' || url === 'LOGO' || url.length < 5) return '';
+            
+            // Detección de Google Drive (varios formatos)
+            const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+            }
+
+            // Detección de Google Photos o enlaces compartidos
+            if (url.includes('photos.app.goo.gl')) {
+                return url; // Se intenta cargar directamente
+            }
+
+            // Si es URL web normal (https://...)
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return url;
+            }
+
+            return '';
         }
 
         function parseCSVLine(text) {
@@ -376,9 +415,9 @@
             }
 
             grid.innerHTML = filtered.map(p => {
-                const hasLogo = p.logo && p.logo !== '0' && p.logo !== '';
+                const hasLogo = p.logo && p.logo.trim() !== '';
                 const visualContent = hasLogo 
-                    ? `<img src="${p.logo}" alt="${p.name}" class="h-14 w-auto mx-auto object-contain drop-shadow" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-solid ${p.icon} text-3xl\'></i>';">`
+                    ? `<img src="${p.logo}" alt="${p.name}" class="h-14 w-auto mx-auto object-contain drop-shadow" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fa-solid ${p.icon} text-3xl\\'></i>';">`
                     : `<i class="fa-solid ${p.icon} text-3xl"></i>`;
 
                 return `
@@ -449,4 +488,9 @@
         }
     </script>
 </body>
-</html>
+</html>"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content_debug)
+
+print("Archivo con detección inteligente de la columna LOGO generado.")
