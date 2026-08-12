@@ -208,10 +208,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CONEXIÓN ROBUSTA ROBUSTO -->
+    <!-- SCRIPT DE CONEXIÓN USANDO EL ENLACE PUBLICADO -->
     <script>
-        const SHEET_ID = '1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA';
-        const SHEET_JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
+        // Enlace CSV generado a partir de tu publicación web
+        const PUBLISHED_CSV_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv`;
 
         const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
         let catalogData = [];
@@ -226,39 +226,45 @@
 
         async function fetchSheetData() {
             try {
-                const response = await fetch(SHEET_JSON_URL);
-                const text = await response.text();
+                const response = await fetch(PUBLISHED_CSV_URL);
+                const csvText = await response.text();
                 
-                // Limpiar respuesta JSON de Google
-                const jsonText = text.substring(47, text.length - 2);
-                const json = JSON.parse(jsonText);
-                
-                const rows = json.table.rows;
+                // Función para parsear CSV respetando comillas y delimitadores (coma o punto y coma)
+                const lines = csvText.split(/?
+/);
                 catalogData = [];
 
-                rows.forEach((row, index) => {
-                    if (!row.c) return;
-                    
-                    const codigo = row.c[0] ? (row.c[0].v || row.c[0].f || '') : '';
-                    const producto = row.c[1] ? row.c[1].v : '';
-                    const cantidad = row.c[2] ? parseInt(row.c[2].v || 0) : 0;
-                    
-                    // Obtener PVP de la Columna I (index 8) o F (index 5)
-                    let pvp = '';
-                    if (row.c[8] && row.c[8].v !== null) pvp = row.c[8].f || row.c[8].v;
-                    else if (row.c[5] && row.c[5].v !== null) pvp = row.c[5].f || row.c[5].v;
-                    else pvp = '$0.30';
+                lines.forEach((line, index) => {
+                    if (index === 0 || !line.trim()) return; // Saltar encabezados y líneas vacías
 
-                    if (typeof pvp === 'number') pvp = `$${pvp.toFixed(2)}`;
-                    else if (pvp && !pvp.toString().includes('$')) pvp = `$${pvp}`;
+                    // Parser compatible con comas o punto y coma como separador
+                    const delimiter = line.includes(';') ? ';' : ',';
+                    const regex = new RegExp(`(?:^|${delimiter})(?:"([^"]*)"|([^"${delimiter}]*))`, 'g');
+                    const columns = [];
+                    let match;
+                    while (match = regex.exec(line)) {
+                        columns.push((match[1] || match[2] || '').trim());
+                    }
 
-                    if (producto && producto.toString().trim() !== '') {
-                        const prodName = producto.toString().trim();
+                    if (columns.length < 2) return;
+
+                    const codigo = columns[0];
+                    const producto = columns[1];
+                    const cantidad = parseInt(columns[2]) || 0;
+                    
+                    // Obtener PVP de la columna I (índice 8) o F (índice 5)
+                    let pvp = columns[8] || columns[5] || '$0.30';
+                    if (!pvp.includes('$') && !isNaN(parseFloat(pvp.replace(',', '.')))) {
+                        pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
+                    }
+
+                    if (producto && producto.trim() !== '') {
+                        const prodName = producto.trim();
                         const cat = inferCategory(prodName);
                         const icon = inferIcon(prodName);
 
                         catalogData.push({
-                            id: codigo || (index + 1).toString().padStart(3, '0'),
+                            id: codigo || (index).toString().padStart(3, '0'),
                             name: prodName,
                             stock: cantidad,
                             price: pvp,
@@ -271,12 +277,11 @@
 
                 renderProducts();
             } catch (error) {
-                console.error("Error al cargar Google Sheets:", error);
+                console.error("Error al cargar desde la publicación web:", error);
                 document.getElementById("productGrid").innerHTML = `
                     <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-rose-200 text-rose-600 p-6">
                         <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-                        <p class="text-xs font-bold">No se pudo conectar a la hoja de cálculo.</p>
-                        <p class="text-[11px] text-slate-500 mt-1">Asegúrate de haber ido a "Archivo > Compartir > Publicar en la web" en Google Sheets.</p>
+                        <p class="text-xs font-bold">Error de conexión con la publicación de Google Sheets.</p>
                     </div>
                 `;
             }
