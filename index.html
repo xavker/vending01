@@ -29,107 +29,224 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Header Fijo (Azul Profundo a Celeste) -->
-    <header class="bg-gradient-to-r from-brandAzul to-brandCeleste text-white sticky top-0 z-40 shadow-md">
-        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Header Fijo Superior (Azul Profundo a Celeste) -->
+    <header class="bg-gradient-to-r from-brandAzul via-sky-900 to-brandCeleste text-white sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            
+            <!-- Logo e Identidad -->
             <div class="flex items-center space-x-3">
-                <div class="bg-white p-2 rounded-full shadow-md text-brandCeleste">
-                    <i class="fa-solid fa-bottle-water text-xl"></i>
+                <div class="bg-white p-2.5 rounded-2xl shadow-md text-brandCeleste flex items-center justify-center">
+                    <i class="fa-solid fa-bottle-water text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base leading-tight tracking-wide">AGUA CÉLICA VENDING</h1>
+                    <h1 class="font-bold text-base sm:text-lg leading-tight tracking-wide">AGUA PURIFICADA CÉLICA</h1>
                     <p class="text-xs text-brandCelesteLight font-medium flex items-center mt-0.5">
-                        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping mr-1.5"></span>
-                        Servicio 24/7 Disponible
+                        <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping mr-1.5"></span>
+                        Máquina Vending 24/7 Operativa
                     </p>
                 </div>
             </div>
-            <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-900 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center shadow transition transform active:scale-95">
-                <i class="fa-solid fa-headset mr-1.5"></i> Soporte
-            </button>
+
+            <!-- Botones de Acción (Escritorio y Móvil) -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Visitas Badge -->
+                <div class="hidden sm:flex items-center bg-slate-900/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs text-slate-200">
+                    <i class="fa-solid fa-eye text-sky-400 mr-2"></i>
+                    <span><strong id="headerVisitCount">128</strong> Visitas</span>
+                </div>
+
+                <button onclick="openSuggestModal()" class="hidden md:flex bg-white/10 hover:bg-white/20 text-white font-semibold px-3.5 py-2 rounded-xl text-xs items-center transition border border-white/20">
+                    <i class="fa-solid fa-lightbulb text-brandAccent mr-1.5"></i> Pedir Producto
+                </button>
+
+                <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center shadow-md transition transform active:scale-95">
+                    <i class="fa-solid fa-headset mr-1.5"></i> Soporte
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Banner de Información de Pago -->
-    <section class="bg-brandAzulDark text-white py-2 px-4 text-xs border-b border-slate-800">
-        <div class="max-w-md mx-auto flex items-center justify-between text-[11px] text-slate-300">
-            <span><i class="fa-solid fa-money-bill-wave text-brandCelesteLight mr-1"></i> Billetes $1 / $5</span>
-            <span><i class="fa-solid fa-coins text-brandAccent mr-1"></i> Dador de Vuelto</span>
-            <span><i class="fa-solid fa-box text-emerald-400 mr-1"></i> 60 Selecciones</span>
+    <!-- Banner Informativo Horizontal -->
+    <section class="bg-brandAzulDark text-white py-2.5 px-4 text-xs border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-slate-300">
+            <div class="flex items-center space-x-4">
+                <span><i class="fa-solid fa-money-bill-wave text-emerald-400 mr-1.5"></i> Billetes aceptados: <strong>$1, $5 y $10</strong></span>
+                <span class="hidden md:inline"><i class="fa-solid fa-coins text-brandAccent mr-1.5"></i> Dador automático de vuelto en monedas</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span><i class="fa-solid fa-location-dot text-sky-400 mr-1.5"></i> Celica, Loja (Jaime Roldós y Eloy Alfaro)</span>
+            </div>
         </div>
     </section>
 
-    <!-- Contenido Principal (Mobile-First Max-Width) -->
-    <main class="flex-grow max-w-md w-full mx-auto p-4 space-y-4">
-
-        <!-- Buscador Dinámico -->
-        <div class="relative">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar producto o espiral (ej. A1, KitKat, Agua)..." 
-                class="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandCeleste text-xs text-slate-800">
-        </div>
-
-        <!-- Categorías (Scroll Horizontal) -->
-        <div class="flex space-x-2 overflow-x-auto no-scrollbar py-0.5" id="categoryContainer">
-            <!-- Renderizado dinámico de categorías -->
-        </div>
-
-        <!-- Contador de Disponibilidad -->
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between text-xs text-slate-600">
-            <div class="flex items-center space-x-1.5">
-                <i class="fa-solid fa-layer-group text-brandCeleste"></i>
-                <span><strong id="totalProductsCount" class="text-slate-900">60</strong> Selecciones</span>
+    <!-- Hero Banner Promocional para Escritorio -->
+    <section class="bg-gradient-to-r from-sky-900 via-brandAzul to-slate-900 text-white py-8 px-4 sm:px-6 lg:px-8 border-b border-sky-800">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left max-w-2xl">
+                <span class="bg-sky-500/20 text-sky-300 border border-sky-400/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Servicio Automático en Celica
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    Catálogo Digital de Snacks, Chocolates y Bebidas 24/7
+                </h2>
+                <p class="text-xs sm:text-sm text-sky-100">
+                    Consulta la disponibilidad de las 60 selecciones en tiempo real. Paga con billetes de $1, $5 y $10 recibiendo tu cambio en monedas, o solicita asistencia directa.
+                </p>
             </div>
-            <div class="flex items-center space-x-1.5 text-emerald-600">
-                <i class="fa-solid fa-circle-check"></i>
-                <span><strong id="availableProductsCount">60</strong> En Stock</span>
+            <div class="flex items-center space-x-3 w-full md:w-auto justify-center">
+                <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
+                    class="bg-brandCeleste hover:bg-sky-500 text-white font-bold px-5 py-3 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg transition">
+                    <i class="fa-solid fa-map-location-dot text-base"></i>
+                    <span>Ver en Google Maps</span>
+                </a>
             </div>
-            <button onclick="openSuggestModal()" class="text-brandCeleste font-bold hover:underline flex items-center text-[11px]">
-                <i class="fa-solid fa-lightbulb text-brandAccent mr-1"></i> Pedir snack
-            </button>
         </div>
+    </section>
 
-        <!-- Catálogo de Productos (Grid 2 Columnas) -->
-        <div class="grid grid-cols-2 gap-3" id="productGrid">
-            <!-- Renderizado dinámico de productos -->
-        </div>
+    <!-- Layout Principal Escritorio (2 Columnas: Barra Lateral + Área Principal) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        <!-- Sección de Ubicación y Mapa Exacto -->
-        <section class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 mt-6">
-            <div class="flex items-start justify-between">
-                <div>
-                    <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        UBICACIÓN MÁQUINA VENDING
-                    </span>
-                    <h3 class="font-bold text-slate-900 text-sm mt-1">Celica, Loja, Ecuador</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Jaime Roldós y Eloy Alfaro</p>
-                    <p class="text-[11px] font-mono text-slate-400 mt-0.5">Coords: -4.102970, -79.955728</p>
+            <!-- BARRA LATERAL IZQUIERDA (Info Comercial y Ubicación) -->
+            <aside class="lg:col-span-1 space-y-5">
+
+                <!-- Tarjeta 1: Métodos de Pago y Funcionamiento -->
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-brandCeleste flex items-center">
+                        <i class="fa-solid fa-cash-register mr-2"></i> Métodos de Pago
+                    </h3>
+                    <ul class="text-xs space-y-2 text-slate-600">
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-money-bill text-emerald-500 mr-2"></i>Billetes $1, $5, $10</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-coins text-amber-500 mr-2"></i>Dador de Vuelto</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-2 bg-slate-50 rounded-xl">
+                            <span><i class="fa-solid fa-bolt text-sky-500 mr-2"></i>Dispensado Rápido</span>
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                        </li>
+                    </ul>
                 </div>
-                <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
-                    <i class="fa-solid fa-location-dot text-xl"></i>
+
+                <!-- Tarjeta 2: Redes Sociales Oficiales -->
+                <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100 shadow-sm space-y-3 text-center">
+                    <h3 class="font-bold text-brandAzul text-xs uppercase tracking-wider">Síguenos en Redes Sociales</h3>
+                    <div class="flex items-center justify-center space-x-3">
+                        <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593979724195" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center text-xl shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" 
+                            class="w-10 h-10 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-lg shadow transition transform hover:scale-105">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Publicamos promociones y nuevos productos</p>
+                </div>
+
+                <!-- Tarjeta 3: Ubicación Exacta y Mapa -->
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                UBICACIÓN MÁQUINA
+                            </span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-1.5">Celica, Loja, Ecuador</h4>
+                            <p class="text-xs text-slate-500">Jaime Roldós y Eloy Alfaro</p>
+                            <p class="text-[10px] font-mono text-slate-400 mt-1">Coords: -4.102971, -79.955728</p>
+                        </div>
+                        <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
+                            <i class="fa-solid fa-location-dot text-xl"></i>
+                        </div>
+                    </div>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
+                        class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
+                        <i class="fa-solid fa-map-location-dot text-sm"></i>
+                        <span>Cómo llegar en Google Maps</span>
+                    </a>
+                </div>
+
+                <!-- Tarjeta 4: Estadísticas de Visitas -->
+                <div class="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 shadow-sm space-y-2 text-center">
+                    <p class="text-[11px] text-slate-400">Contador de Visitas a la Web</p>
+                    <p class="text-2xl font-extrabold text-brandCelesteLight" id="sidebarVisitCount">128</p>
+                    <p class="text-[10px] text-slate-500">Actualizado en tiempo real</p>
+                </div>
+
+            </aside>
+
+            <!-- ÁREA PRINCIPAL DERECHA (Buscador, Filtros y Catálogo) -->
+            <section class="lg:col-span-3 space-y-5">
+
+                <!-- Barra Superior de Búsqueda y Filtros -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <!-- Buscador -->
+                        <div class="relative w-full sm:w-80">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                            <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar por producto o selección (ej. 001, Oreo)..." 
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brandCeleste text-xs text-slate-800">
+                        </div>
+
+                        <!-- Indicadores de Stock -->
+                        <div class="flex items-center space-x-4 text-xs text-slate-600 w-full sm:w-auto justify-between">
+                            <div class="flex items-center space-x-1.5">
+                                <i class="fa-solid fa-layer-group text-brandCeleste"></i>
+                                <span><strong id="totalProductsCount" class="text-slate-900">0</strong> Selecciones</span>
+                            </div>
+                            <div class="flex items-center space-x-1.5 text-emerald-600">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span><strong id="availableProductsCount">0</strong> Disponibles</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categorías (Pills) -->
+                    <div class="flex space-x-2 overflow-x-auto no-scrollbar pt-1" id="categoryContainer">
+                        <!-- Renderizado dinámico de categorías -->
+                    </div>
+
+                </div>
+
+                <!-- Grid de Productos (2 col en móvil, 3 en tablet, 4-5 en desktop) -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3.5" id="productGrid">
+                    <!-- Renderizado dinámico de productos desde Google Sheets -->
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Footer General -->
+    <footer class="bg-brandAzulDark text-slate-400 text-center py-8 px-4 text-xs mt-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div class="text-left space-y-1">
+                    <p class="font-bold text-slate-200 text-sm">Agua Purificada Célica &copy; 2026</p>
+                    <p class="text-slate-400 text-xs">Acepta Billetes de $1, $5 y $10 con Dador de Vuelto en Monedas</p>
+                </div>
+                <div class="flex space-x-4 text-lg">
+                    <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://wa.me/593979724195" target="_blank" class="hover:text-emerald-400"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com" target="_blank" class="hover:text-pink-400"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
-
-            <!-- Botón Mapa Interactivo -->
-            <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
-                class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
-                <i class="fa-solid fa-map-location-dot text-sm"></i>
-                <span>Abrir en Google Maps / Cómo llegar</span>
-            </a>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-brandAzulDark text-slate-400 text-center py-6 px-4 text-xs mt-6 border-t border-slate-800">
-        <div class="max-w-md mx-auto space-y-2">
-            <p class="font-semibold text-slate-200">Agua Purificada Célica &copy; 2026</p>
-            <p class="text-slate-400">Coordenadas: -4.102971, -79.955728 | Celica - Ecuador</p>
-            <p class="text-brandCelesteLight font-medium">
-                <i class="fa-brands fa-whatsapp mr-1 text-emerald-400"></i>Soporte WhatsApp: 097 972 4195
-            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 pt-2">
+                <p>Ubicación: Jaime Roldós y Eloy Alfaro, Celica, Loja (-4.102971, -79.955728)</p>
+                <p>Soporte WhatsApp: 097 972 4195 | Visitas registradas: <strong id="footerVisitCount" class="text-sky-400">128</strong></p>
+            </div>
         </div>
     </footer>
 
@@ -154,14 +271,14 @@
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 mb-1">Número de Espiral / Selección</label>
-                    <input type="text" id="suppSpiral" placeholder="Ej. A1, B4, F10..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
+                    <input type="text" id="suppSpiral" placeholder="Ej. 001, 005, 054..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 mb-1">Tipo de Inconveniente</label>
                     <select id="suppType" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brandCeleste outline-none">
                         <option value="No dio vuelto exacto">No me entregó el vuelto completo</option>
                         <option value="Producto atascado">El producto quedó atascado</option>
-                        <option value="Billetes no aceptados">No aceptó billete o moneda</option>
+                        <option value="Billetes no aceptados">No aceptó billete ($1, $5 o $10)</option>
                         <option value="Otro motivo">Otro asunto</option>
                     </select>
                 </div>
@@ -214,90 +331,97 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC CONEXIÓN GOOGLE SHEETS EN TIEMPO REAL -->
     <script>
-        const categories = ["Todas", "Chocolates", "Snacks Salados", "Galletas", "Bebidas", "Saludable"];
-        
-        const catalogData = [
-            // Fila A: Chocolates
-            { id: "A1", name: "KitKat 4 Barra 41.5g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-cookie-bite" },
-            { id: "A2", name: "KitKat Chunky 40g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-cookie-bite" },
-            { id: "A3", name: "M&M Maní 49.3g", cat: "Chocolates", price: 1.00, avail: true, icon: "fa-cookie" },
-            { id: "A4", name: "M&M Chocolate 47.9g", cat: "Chocolates", price: 1.00, avail: true, icon: "fa-cookie" },
-            { id: "A5", name: "Snickers 52.7g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-candy-bar" },
-            { id: "A6", name: "Milky Way 52.2g", cat: "Chocolates", price: 1.25, avail: true, icon: "fa-candy-bar" },
-            { id: "A7", name: "Chocolatina Jet", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-box" },
-            { id: "A8", name: "Choco Maní Nestlé", cat: "Chocolates", price: 0.75, avail: true, icon: "fa-cookie-bite" },
-            { id: "A9", name: "Tango Chocolate", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-cookie-bite" },
-            { id: "A10", name: "Ferrero Rocher T3", cat: "Chocolates", price: 2.00, avail: true, icon: "fa-gem" },
+        const SHEET_ID = '1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Hoja%201`;
 
-            // Fila B: Galletas
-            { id: "B1", name: "Oreo Paquete 4U", cat: "Galletas", price: 0.50, avail: true, icon: "fa-cookie" },
-            { id: "B2", name: "Oreo Doble Crema", cat: "Galletas", price: 0.60, avail: true, icon: "fa-cookie" },
-            { id: "B3", name: "Club Social Original", cat: "Galletas", price: 0.50, avail: true, icon: "fa-square" },
-            { id: "B4", name: "Ritz Saladas 3U", cat: "Galletas", price: 0.50, avail: true, icon: "fa-circle" },
-            { id: "B5", name: "Wafer Plazero Vainilla", cat: "Galletas", price: 0.40, avail: true, icon: "fa-layer-group" },
-            { id: "B6", name: "Wafer Plazero Chocolate", cat: "Galletas", price: 0.40, avail: true, icon: "fa-layer-group" },
-            { id: "B7", name: "Amor Frutilla Wafer", cat: "Galletas", price: 0.50, avail: true, icon: "fa-heart" },
-            { id: "B8", name: "Galleta Chiky Chocolate", cat: "Galletas", price: 0.50, avail: true, icon: "fa-cookie-bite" },
-            { id: "B9", name: "Ducales Roscas Paquete", cat: "Galletas", price: 0.60, avail: true, icon: "fa-star" },
-            { id: "B10", name: "Tosh Miel y Avena", cat: "Saludable", price: 0.60, avail: true, icon: "fa-wheat-awn" },
-
-            // Fila C: Snacks Salados
-            { id: "C1", name: "Doritos Nacho Cheese", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-play" },
-            { id: "C2", name: "Cheetos Queso 35g", cat: "Snacks Salados", price: 0.60, avail: true, icon: "fa-cheese" },
-            { id: "C3", name: "Ruffles Onduladas", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-lines-leaning" },
-            { id: "C4", name: "Papas Lays Clásicas", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-bowl-food" },
-            { id: "C5", name: "Pringles Original 40g", cat: "Snacks Salados", price: 1.50, avail: true, icon: "fa-drum" },
-            { id: "C6", name: "Pringles Queso 40g", cat: "Snacks Salados", price: 1.50, avail: true, icon: "fa-drum" },
-            { id: "C7", name: "Chifle Plátano Salado", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-stroopwafel" },
-            { id: "C8", name: "Chifle Plátano Dulce", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-stroopwafel" },
-            { id: "C9", name: "Tostado Con Sal", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-seedling" },
-            { id: "C10", name: "Maní Salado Frito 50g", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-pills" },
-
-            // Fila D: Frutos Secos / Saludable
-            { id: "D1", name: "Maní Con Pasas 50g", cat: "Saludable", price: 0.60, avail: true, icon: "fa-pills" },
-            { id: "D2", name: "Kachitos Queso", cat: "Snacks Salados", price: 0.50, avail: true, icon: "fa-cheese" },
-            { id: "D3", name: "Tostitos Queso", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-border-all" },
-            { id: "D4", name: "Barra Cereal Tosh", cat: "Saludable", price: 0.75, avail: true, icon: "fa-sheet-plastic" },
-            { id: "D5", name: "Barra Granola Miel", cat: "Saludable", price: 0.60, avail: true, icon: "fa-wheat-awn" },
-            { id: "D6", name: "Caramelos Tic Tac", cat: "Chocolates", price: 0.60, avail: true, icon: "fa-box-tissue" },
-            { id: "D7", name: "Chicles Trident Menta", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-box" },
-            { id: "D8", name: "Gominolas Ambrosoli", cat: "Chocolates", price: 0.50, avail: true, icon: "fa-shapes" },
-            { id: "D9", name: "Ruffles Picante", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-pepper-hot" },
-            { id: "D10", name: "Doritos Flamin Hot", cat: "Snacks Salados", price: 0.75, avail: true, icon: "fa-fire" },
-
-            // Fila E: Bebidas
-            { id: "E1", name: "Agua Purificada Célica 600ml", cat: "Bebidas", price: 0.50, avail: true, icon: "fa-bottle-water" },
-            { id: "E2", name: "Agua Purificada Célica 1 Litro", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-bottle-water" },
-            { id: "E3", name: "Coca-Cola Original 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
-            { id: "E4", name: "Coca-Cola Sin Azúcar", cat: "Saludable", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
-            { id: "E5", name: "Sprite 500ml Botella", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
-            { id: "E6", name: "Fanta Naranja 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
-            { id: "E7", name: "Fioravanti Frutilla 500ml", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-bottle-droplet" },
-            { id: "E8", name: "Gatorade Tropical 500ml", cat: "Bebidas", price: 1.25, avail: true, icon: "fa-bolt-lightning" },
-            { id: "E9", name: "Powerade Azul 500ml", cat: "Bebidas", price: 1.00, avail: true, icon: "fa-bolt" },
-            { id: "E10", name: "Agua Con Gas Dasani 500ml", cat: "Bebidas", price: 0.60, avail: true, icon: "fa-glass-water" },
-
-            // Fila F: Bebidas / Energizantes
-            { id: "F1", name: "Agua Célica Con Llave 20L", cat: "Bebidas", price: 1.50, avail: true, icon: "fa-faucet-drip" },
-            { id: "F2", name: "Té Fuze Tea Durazno", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-whiskey-glass" },
-            { id: "F3", name: "Té Fuze Tea Limón", cat: "Bebidas", price: 0.85, avail: true, icon: "fa-whiskey-glass" },
-            { id: "F4", name: "Monster Energy 473ml", cat: "Bebidas", price: 2.25, avail: true, icon: "fa-bolt" },
-            { id: "F5", name: "Red Bull Energy 250ml", cat: "Bebidas", price: 2.50, avail: true, icon: "fa-bolt" },
-            { id: "F6", name: "Vive 100 Energizante", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-battery-full" },
-            { id: "F7", name: "Jugo Del Valle Durazno", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-wine-bottle" },
-            { id: "F8", name: "Jugo Del Valle Manzana", cat: "Bebidas", price: 0.75, avail: true, icon: "fa-wine-bottle" },
-            { id: "F9", name: "Bebida Láctea Chocolate", cat: "Bebidas", price: 0.80, avail: true, icon: "fa-cow" },
-            { id: "F10", name: "Agua Célica 600ml Fría", cat: "Bebidas", price: 0.50, avail: true, icon: "fa-snowflake" }
-        ];
-
+        const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
+        let catalogData = [];
         let currentCategory = "Todas";
 
         document.addEventListener("DOMContentLoaded", () => {
+            initVisitCounter();
             renderCategories();
-            renderProducts();
+            fetchSheetData();
+            // Sincronización continua cada 30 segundos
+            setInterval(fetchSheetData, 30000);
         });
+
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const data = await response.text();
+                
+                const rows = data.split('\n').slice(1);
+                catalogData = [];
+
+                rows.forEach(row => {
+                    const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
+                    
+                    const codigo = columns[0];
+                    const producto = columns[1];
+                    const cantidad = parseInt(columns[2]) || 0;
+                    let pvp = columns[8] || columns[5] || "$0.00";
+
+                    if (!pvp.includes("$") && !isNaN(parseFloat(pvp.replace(',', '.')))) {
+                        pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
+                    }
+
+                    if (codigo && producto && producto.trim() !== '') {
+                        const category = inferCategory(producto);
+                        const icon = inferIcon(producto, category);
+
+                        catalogData.push({
+                            id: codigo,
+                            name: producto,
+                            stock: cantidad,
+                            price: pvp,
+                            cat: category,
+                            icon: icon,
+                            avail: cantidad > 0
+                        });
+                    }
+                });
+
+                renderProducts();
+            } catch (error) {
+                console.error("Error al cargar datos desde Google Sheets:", error);
+            }
+        }
+
+        function inferCategory(name) {
+            const n = name.toLowerCase();
+            if (n.includes('agua') || n.includes('cola') || n.includes('coctel') || n.includes('leche') || n.includes('cafe') || n.includes('yogurt') || n.includes('cifrut') || n.includes('powerade') || n.includes('amper')) return "Bebidas";
+            if (n.includes('papas') || n.includes('doritos') || n.includes('golpe') || n.includes('chifles') || n.includes('mani') || n.includes('tabaco')) return "Snacks Salados";
+            if (n.includes('manicho') || n.includes('galak') || n.includes('nicolo') || n.includes('tango')) return "Chocolates y Dulces";
+            if (n.includes('oreo') || n.includes('galletas')) return "Galletas";
+            if (n.includes('toallas') || n.includes('nosotras') || n.includes('velas')) return "Aseo y Cuidado";
+            return "Snacks Salados";
+        }
+
+        function inferIcon(name, category) {
+            const n = name.toLowerCase();
+            if (n.includes('agua')) return "fa-bottle-water";
+            if (n.includes('cola') || n.includes('cifrut') || n.includes('powerade') || n.includes('amper')) return "fa-bottle-droplet";
+            if (n.includes('leche') || n.includes('yogurt') || n.includes('cafe')) return "fa-mug-hot";
+            if (n.includes('oreo') || n.includes('galletas')) return "fa-cookie";
+            if (n.includes('manicho') || n.includes('galak') || n.includes('nicolo') || n.includes('tango')) return "fa-cookie-bite";
+            if (n.includes('papas') || n.includes('doritos') || n.includes('chifles') || n.includes('golpe')) return "fa-bowl-food";
+            if (n.includes('toallas') || n.includes('nosotras')) return "fa-box-tissue";
+            if (n.includes('velas')) return "fa-lightbulb";
+            return "fa-box";
+        }
+
+        function initVisitCounter() {
+            let views = parseInt(localStorage.getItem('celica_vending_views') || '128');
+            views += 1;
+            localStorage.setItem('celica_vending_views', views.toString());
+            
+            if (document.getElementById('headerVisitCount')) document.getElementById('headerVisitCount').innerText = views;
+            if (document.getElementById('sidebarVisitCount')) document.getElementById('sidebarVisitCount').innerText = views;
+            if (document.getElementById('footerVisitCount')) document.getElementById('footerVisitCount').innerText = views;
+        }
 
         function renderCategories() {
             const container = document.getElementById("categoryContainer");
@@ -306,7 +430,7 @@
                     class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition shadow-sm ${
                         currentCategory === cat 
                         ? 'bg-brandCeleste text-white' 
-                        : 'bg-white text-slate-600 hover:bg-sky-50 border border-slate-200'
+                        : 'bg-slate-50 text-slate-600 hover:bg-sky-50 border border-slate-200'
                     }">
                     ${cat}
                 </button>
@@ -330,14 +454,14 @@
             });
 
             document.getElementById("totalProductsCount").innerText = catalogData.length;
-            document.getElementById("availableProductsCount").innerText = filtered.filter(p => p.avail).length;
+            document.getElementById("availableProductsCount").innerText = catalogData.filter(p => p.avail).length;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-2 text-center py-10 bg-white rounded-2xl border border-slate-200 p-4">
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-6">
                         <i class="fa-solid fa-magnifying-glass-minus text-sky-200 text-4xl mb-2"></i>
-                        <p class="text-xs font-bold text-slate-700">Sin resultados para tu búsqueda</p>
-                        <button onclick="openSuggestModal()" class="mt-3 bg-brandCeleste text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">
+                        <p class="text-xs font-bold text-slate-700">Sin resultados en este momento</p>
+                        <button onclick="openSuggestModal()" class="mt-3 bg-brandCeleste text-white px-4 py-2 rounded-xl text-xs font-bold shadow">
                             Sugerir este producto
                         </button>
                     </div>
@@ -346,13 +470,13 @@
             }
 
             grid.innerHTML = filtered.map(p => `
-                <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex flex-col justify-between relative hover:border-sky-300 transition">
+                <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col justify-between relative hover:border-sky-300 hover:shadow-md transition">
                     <div class="flex items-center justify-between mb-2">
                         <span class="bg-brandCeleste text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm">
-                            Espiral ${p.id}
+                            Selección ${p.id}
                         </span>
                         <span class="text-xs font-extrabold text-brandAzul">
-                            $${p.price.toFixed(2)}
+                            ${p.price}
                         </span>
                     </div>
 
@@ -362,10 +486,15 @@
 
                     <div>
                         <h4 class="font-bold text-xs text-slate-900 line-clamp-2 leading-tight">${p.name}</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">${p.cat}</p>
+                        <div class="flex items-center justify-between mt-1">
+                            <p class="text-[10px] text-slate-400">${p.cat}</p>
+                            <span class="text-[10px] font-semibold ${p.avail ? 'text-emerald-600' : 'text-rose-500'}">
+                                ${p.avail ? `Stock: ${p.stock}` : 'Agotado'}
+                            </span>
+                        </div>
                     </div>
 
-                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-2.5 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 hover:text-brandCeleste text-[10px] font-semibold py-1.5 rounded-xl flex items-center justify-center space-x-1 transition border border-slate-200">
+                    <button onclick="reportItem('${p.id}', '${p.name}')" class="mt-3 w-full bg-slate-50 hover:bg-sky-50 text-slate-600 hover:text-brandCeleste text-[10px] font-semibold py-1.5 rounded-xl flex items-center justify-center space-x-1 transition border border-slate-200">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>Reportar problema</span>
                     </button>
