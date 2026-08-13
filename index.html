@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CORREGIDO PARA EXTRACCIÓN ESTRICTA DE LA COLUMNA PVP (COLUMNA I) -->
+    <!-- SCRIPT CORREGIDO SIN ERRORES DE SINTAXIS REGEX -->
     <script>
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv';
 
@@ -275,8 +275,8 @@
                 const response = await fetch(PUBLISHED_CSV_URL);
                 const csvText = await response.text();
                 
-                const lines = csvText.split(/?
-/);
+                // Dividir por saltos de línea de forma compatible
+                const lines = csvText.split(/\r?\n/);
                 catalogData = [];
 
                 if (lines.length < 2) return;
@@ -310,7 +310,7 @@
                     let logoUrl = columns[idxLogo] ? columns[idxLogo].trim() : '';
                     logoUrl = convertImageUrl(logoUrl);
                     
-                    // Extraer estrictamente el valor PVP de la Columna I (o índice equivalente)
+                    // Extraer estrictamente el valor PVP de la Columna I
                     let pvpVal = columns[idxPvp] ? columns[idxPvp].trim() : '';
                     if (!pvpVal) pvpVal = '$0.30';
 
