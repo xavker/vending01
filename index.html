@@ -1,4 +1,4 @@
-html_content_debug = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -57,6 +57,11 @@ html_content_debug = """<!DOCTYPE html>
                     <i class="fa-solid fa-lightbulb text-brandAccent mr-1.5"></i> Pedir Producto
                 </button>
 
+                <!-- Botón Actualizar lista (protegido por clave) -->
+                <button onclick="openSpreadsheet()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-3.5 py-2 rounded-xl text-xs flex items-center transition border border-white/20 shadow-sm active:scale-95">
+                    <i class="fa-solid fa-pen-to-square text-brandCelesteLight mr-1.5"></i> Actualizar lista
+                </button>
+
                 <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center shadow-md transition transform active:scale-95">
                     <i class="fa-solid fa-headset mr-1.5"></i> Soporte
                 </button>
@@ -100,22 +105,7 @@ html_content_debug = """<!DOCTYPE html>
             </div>
         </div>
     </section>
-<button id="openSheetBtn">Abrir hoja de cálculo</button>
 
-<script>
-  // URL de la hoja y clave requerida
-  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA/edit?gid=0#gid=0";
-  const PASSWORD = "Francisco07";
-
-  document.getElementById("openSheetBtn").addEventListener("click", () => {
-    const entrada = prompt("Ingrese la clave para abrir la hoja de cálculo:");
-    if (entrada === PASSWORD) {
-      window.open(SHEET_URL, "_blank");
-    } else {
-      alert("Clave incorrecta.");
-    }
-  });
-</script>
     <!-- Layout Principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -223,9 +213,11 @@ html_content_debug = """<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- SCRIPT DINÁMICO DE DETECCIÓN INTELIGENTE DE COLUMNAS -->
+    <!-- SCRIPT DINÁMICO DE DETECCIÓN INTELIGENTE DE COLUMNAS Y ACTUALIZACIÓN -->
     <script>
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv';
+        const SPREADSHEET_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA/edit?gid=0#gid=0';
+        const ADMIN_PASSWORD = 'Francisco07';
 
         const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
         let catalogData = [];
@@ -237,6 +229,15 @@ html_content_debug = """<!DOCTYPE html>
             fetchSheetData();
             setInterval(fetchSheetData, 30000);
         });
+
+        function openSpreadsheet() {
+            const entrada = prompt("Ingrese la clave para abrir la hoja de cálculo de administración:");
+            if (entrada === ADMIN_PASSWORD) {
+                window.open(SPREADSHEET_EDIT_URL, "_blank");
+            } else if (entrada !== null) {
+                alert("Clave incorrecta. Acceso denegado.");
+            }
+        }
 
         async function fetchSheetData() {
             try {
@@ -317,13 +318,13 @@ html_content_debug = """<!DOCTYPE html>
             
             // Detección de Google Drive (varios formatos)
             const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-            if (driveMatch && driveMatch[1]) {
-                return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+            if (driveMatch && driveMatch) {
+                return `https://drive.google.com/uc?export=view&id=${driveMatch}`;
             }
 
             // Detección de Google Photos o enlaces compartidos
             if (url.includes('photos.app.goo.gl')) {
-                return url; // Se intenta cargar directamente
+                return url;
             }
 
             // Si es URL web normal (https://...)
@@ -503,9 +504,4 @@ html_content_debug = """<!DOCTYPE html>
         }
     </script>
 </body>
-</html>"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content_debug)
-
-print("Archivo con detección inteligente de la columna LOGO generado.")
+</html>
