@@ -57,6 +57,11 @@
                     <i class="fa-solid fa-lightbulb text-brandAccent mr-1.5"></i> Pedir Producto
                 </button>
 
+                <!-- Botón Actualizar lista (protegido por clave) -->
+                <button onclick="openSpreadsheet()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-3.5 py-2 rounded-xl text-xs flex items-center transition border border-white/20 shadow-sm active:scale-95">
+                    <i class="fa-solid fa-pen-to-square text-brandCelesteLight mr-1.5"></i> Actualizar lista
+                </button>
+
                 <button onclick="openSupportModal()" class="bg-brandAccent hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center shadow-md transition transform active:scale-95">
                     <i class="fa-solid fa-headset mr-1.5"></i> Soporte
                 </button>
@@ -72,7 +77,7 @@
                 <span class="hidden md:inline"><i class="fa-solid fa-coins text-brandAccent mr-1.5"></i> Dador automático de vuelto en monedas</span>
             </div>
             <div class="flex items-center space-x-4">
-                <span><i class="fa-solid fa-location-dot text-sky-400 mr-1.5"></i> Carlos Bustamante y Manuela Cañizares, Parque Central, Celica</span>
+                <span><i class="fa-solid fa-location-dot text-sky-400 mr-1.5"></i> Celica, Loja (Jaime Roldós y Eloy Alfaro)</span>
             </div>
         </div>
     </section>
@@ -92,7 +97,7 @@
                 </p>
             </div>
             <div class="flex items-center space-x-3 w-full md:w-auto justify-center">
-                <a href="https://www.google.com/maps/search/?api=1&query=Parque+Central+Celica+Loja+Ecuador" target="_blank" rel="noopener noreferrer" 
+                <a href="https://www.google.com/maps/search/?api=1&query=-4.102970506118041,-79.95572841369666" target="_blank" rel="noopener noreferrer" 
                     class="bg-brandCeleste hover:bg-sky-500 text-white font-bold px-5 py-3 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg transition">
                     <i class="fa-solid fa-map-location-dot text-base"></i>
                     <span>Ver en Google Maps</span>
@@ -107,8 +112,6 @@
 
             <!-- BARRA LATERAL IZQUIERDA -->
             <aside class="lg:col-span-1 space-y-5">
-
-                <!-- Tarjeta 1: Métodos de Pago -->
                 <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
                     <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-brandCeleste flex items-center">
                         <i class="fa-solid fa-cash-register mr-2"></i> Métodos de Pago
@@ -125,7 +128,6 @@
                     </ul>
                 </div>
 
-                <!-- Tarjeta 2: Redes Sociales -->
                 <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100 shadow-sm space-y-3 text-center">
                     <h3 class="font-bold text-brandAzul text-xs uppercase tracking-wider">Síguenos en Redes Sociales</h3>
                     <div class="flex items-center justify-center space-x-3">
@@ -138,30 +140,6 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 3: Ubicación Exacta -->
-                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <span class="bg-sky-100 text-brandCeleste text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                UBICACIÓN MÁQUINA
-                            </span>
-                            <h4 class="font-bold text-slate-900 text-sm mt-1.5">Celica, Loja, Ecuador</h4>
-                            <p class="text-xs text-slate-600 font-medium">Carlos Bustamante y Manuela Cañizares</p>
-                            <p class="text-[11px] text-slate-400">Parque Central, Celica</p>
-                        </div>
-                        <div class="bg-sky-50 text-brandCeleste p-2.5 rounded-xl">
-                            <i class="fa-solid fa-location-dot text-xl"></i>
-                        </div>
-                    </div>
-
-                    <a href="https://www.google.com/maps/search/?api=1&query=Parque+Central+Celica+Loja+Ecuador" target="_blank" rel="noopener noreferrer" 
-                        class="w-full bg-brandCeleste hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow">
-                        <i class="fa-solid fa-map-location-dot text-sm"></i>
-                        <span>Cómo llegar en Google Maps</span>
-                    </a>
-                </div>
-
-                <!-- Tarjeta 4: Contador de Visitas -->
                 <div class="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 shadow-sm space-y-2 text-center">
                     <p class="text-[11px] text-slate-400">Contador de Visitas</p>
                     <p class="text-2xl font-extrabold text-brandCelesteLight" id="sidebarVisitCount">128</p>
@@ -205,26 +183,6 @@
         </div>
     </div>
 
-    <!-- Footer General -->
-    <footer class="bg-brandAzulDark text-slate-400 text-center py-8 px-4 text-xs mt-10 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto space-y-3">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                <div class="text-left space-y-1">
-                    <p class="font-bold text-slate-200 text-sm">Agua Purificada Célica &copy; 2026</p>
-                    <p class="text-slate-400 text-xs">Acepta Billetes de $1, $5 y $10 con Dador de Vuelto en Monedas</p>
-                </div>
-                <div class="flex space-x-4 text-lg">
-                    <a href="https://www.facebook.com/profile.php?id=61567870389204" target="_blank" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://wa.me/593979724195" target="_blank" class="hover:text-emerald-400"><i class="fa-brands fa-whatsapp"></i></a>
-                </div>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 pt-2">
-                <p>Ubicación: Carlos Bustamante y Manuela Cañizares, Parque Central, Celica, Loja</p>
-                <p>Soporte WhatsApp: 097 972 4195 | Visitas registradas: <strong id="footerVisitCount" class="text-sky-400">128</strong></p>
-            </div>
-        </div>
-    </footer>
-
     <!-- Modales -->
     <div id="supportModal" class="fixed inset-0 bg-slate-900 bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative">
@@ -255,9 +213,11 @@
         </div>
     </div>
 
-    <!-- SCRIPT CORREGIDO SIN ERRORES DE SINTAXIS REGEX -->
+    <!-- SCRIPT DINÁMICO DE DETECCIÓN INTELIGENTE DE COLUMNAS Y ACTUALIZACIÓN -->
     <script>
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAi4nmALEYl5wd-kP25vZr_Hkmg9FxhSAQp9PSxOwASuMdnZmChDf6tUkCx_RH4sWZ_g0XdPW-Oqyz/pub?output=csv';
+        const SPREADSHEET_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA/edit?gid=0#gid=0';
+        const ADMIN_PASSWORD = 'Francisco07';
 
         const categories = ["Todas", "Snacks Salados", "Chocolates y Dulces", "Galletas", "Bebidas", "Aseo y Cuidado"];
         let catalogData = [];
@@ -270,32 +230,40 @@
             setInterval(fetchSheetData, 30000);
         });
 
+        function openSpreadsheet() {
+            const entrada = prompt("Ingrese la clave para abrir la hoja de cálculo de administración:");
+            if (entrada === ADMIN_PASSWORD) {
+                window.open(SPREADSHEET_EDIT_URL, "_blank");
+            } else if (entrada !== null) {
+                alert("Clave incorrecta. Acceso denegado.");
+            }
+        }
+
         async function fetchSheetData() {
             try {
                 const response = await fetch(PUBLISHED_CSV_URL);
                 const csvText = await response.text();
                 
-                // Dividir por saltos de línea de forma compatible
                 const lines = csvText.split(/\r?\n/);
                 catalogData = [];
 
                 if (lines.length < 2) return;
 
-                // Detectar los índices exactos de las columnas desde el encabezado
+                // Detectar los índices exactos de las columnas desde el encabezado (Línea 0)
                 const headerCols = parseCSVLine(lines[0]).map(c => c.toLowerCase().trim());
                 
                 let idxCodigo = headerCols.findIndex(c => c.includes('codigo') || c.includes('código'));
                 let idxProducto = headerCols.findIndex(c => c.includes('producto'));
                 let idxCantidad = headerCols.findIndex(c => c.includes('cantidad'));
                 let idxLogo = headerCols.findIndex(c => c.includes('logo') || c.includes('imagen') || c.includes('foto'));
-                let idxPvp = headerCols.findIndex(c => c === 'pvp');
+                let idxPvp = headerCols.findIndex(c => c === 'pvp' || c.includes('venta al publico') || c.includes('total venta'));
 
-                // Fallbacks si no encuentra el nombre explícito
+                // Fallbacks si no encuentra el encabezado explícito
                 if (idxCodigo === -1) idxCodigo = 0;
                 if (idxProducto === -1) idxProducto = 1;
                 if (idxCantidad === -1) idxCantidad = 2;
-                if (idxLogo === -1) idxLogo = 7; // Columna H
-                if (idxPvp === -1) idxPvp = 8;   // Columna I (PVP estricto)
+                if (idxLogo === -1) idxLogo = 7; // Columna H por defecto
+                if (idxPvp === -1) idxPvp = 8;  // Columna I por defecto
 
                 lines.forEach((line, index) => {
                     if (index === 0 || !line.trim()) return;
@@ -310,13 +278,9 @@
                     let logoUrl = columns[idxLogo] ? columns[idxLogo].trim() : '';
                     logoUrl = convertImageUrl(logoUrl);
                     
-                    // Extraer estrictamente el valor PVP de la Columna I
-                    let pvpVal = columns[idxPvp] ? columns[idxPvp].trim() : '';
-                    if (!pvpVal) pvpVal = '$0.30';
-
-                    // Formatear PVP adecuadamente
-                    if (!pvpVal.includes('$') && !isNaN(parseFloat(pvpVal.replace(',', '.')))) {
-                        pvpVal = `$${parseFloat(pvpVal.replace(',', '.')).toFixed(2)}`;
+                    let pvp = columns[idxPvp] || '$0.30';
+                    if (!pvp.includes('$') && !isNaN(parseFloat(pvp.replace(',', '.')))) {
+                        pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
                     }
 
                     if (producto && producto.trim() !== '') {
@@ -328,7 +292,7 @@
                             id: codigo || (index).toString().padStart(3, '0'),
                             name: prodName,
                             stock: cantidad,
-                            price: pvpVal,
+                            price: pvp,
                             cat: cat,
                             logo: logoUrl,
                             icon: icon,
@@ -351,13 +315,23 @@
 
         function convertImageUrl(url) {
             if (!url || url === '0' || url === 'LOGO' || url.length < 5) return '';
+            
+            // Detección de Google Drive (varios formatos)
             const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-            if (driveMatch && driveMatch[1]) {
-                return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+            if (driveMatch && driveMatch) {
+                return `https://drive.google.com/uc?export=view&id=${driveMatch}`;
             }
+
+            // Detección de Google Photos o enlaces compartidos
+            if (url.includes('photos.app.goo.gl')) {
+                return url;
+            }
+
+            // Si es URL web normal (https://...)
             if (url.startsWith('http://') || url.startsWith('https://')) {
                 return url;
             }
+
             return '';
         }
 
@@ -411,7 +385,6 @@
             localStorage.setItem('celica_vending_views', views.toString());
             if (document.getElementById('headerVisitCount')) document.getElementById('headerVisitCount').innerText = views;
             if (document.getElementById('sidebarVisitCount')) document.getElementById('sidebarVisitCount').innerText = views;
-            if (document.getElementById('footerVisitCount')) document.getElementById('footerVisitCount').innerText = views;
         }
 
         function renderCategories() {
@@ -460,7 +433,7 @@
             grid.innerHTML = filtered.map(p => {
                 const hasLogo = p.logo && p.logo.trim() !== '';
                 const visualContent = hasLogo 
-                    ? `<img src="${p.logo}" alt="${p.name}" class="h-14 w-auto mx-auto object-contain drop-shadow" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-solid ${p.icon} text-3xl\'></i>';">`
+                    ? `<img src="${p.logo}" alt="${p.name}" class="h-14 w-auto mx-auto object-contain drop-shadow" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fa-solid ${p.icon} text-3xl\\'></i>';">`
                     : `<i class="fa-solid ${p.icon} text-3xl"></i>`;
 
                 return `
