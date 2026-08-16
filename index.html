@@ -100,7 +100,22 @@ html_content_debug = """<!DOCTYPE html>
             </div>
         </div>
     </section>
+<button id="openSheetBtn">Abrir hoja de cálculo</button>
 
+<script>
+  // URL de la hoja y clave requerida
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1XB9qOMuf8Rpk1Xf684j1qRhDHOrLSJdTEKdjyuu-JwA/edit?gid=0#gid=0";
+  const PASSWORD = "Francisco07";
+
+  document.getElementById("openSheetBtn").addEventListener("click", () => {
+    const entrada = prompt("Ingrese la clave para abrir la hoja de cálculo:");
+    if (entrada === PASSWORD) {
+      window.open(SHEET_URL, "_blank");
+    } else {
+      alert("Clave incorrecta.");
+    }
+  });
+</script>
     <!-- Layout Principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
