@@ -252,18 +252,39 @@
                 // Detectar los índices exactos de las columnas desde el encabezado (Línea 0)
                 const headerCols = parseCSVLine(lines[0]).map(c => c.toLowerCase().trim());
                 
-                let idxCodigo = headerCols.findIndex(c => c.includes('codigo') || c.includes('código'));
-                let idxProducto = headerCols.findIndex(c => c.includes('producto'));
-                let idxCantidad = headerCols.findIndex(c => c.includes('cantidad'));
-                let idxLogo = headerCols.findIndex(c => c.includes('logo') || c.includes('imagen') || c.includes('foto'));
-                let idxPvp = headerCols.findIndex(c => c === 'pvp' || c.includes('venta al publico') || c.includes('total venta'));
+                // 1. Código (evitando 'codigo proveedor')
+                let idxCodigo = headerCols.findIndex(c => c === 'codigo' || c === 'código');
+                if (idxCodigo === -1) {
+                    idxCodigo = headerCols.findIndex(c => (c.includes('codigo') || c.includes('código')) && !c.includes('proveedor'));
+                }
+                
+                // 2. Producto
+                let idxProducto = headerCols.findIndex(c => c === 'productos' || c === 'producto' || c.includes('producto'));
+                
+                // 3. Cantidad / Stock
+                let idxCantidad = headerCols.findIndex(c => c === 'cantidad' || c === 'stock' || c.includes('cantidad'));
+                
+                // 4. Logo / Imagen (evitando 'logo1')
+                let idxLogo = headerCols.findIndex(c => c === 'logo' || c === 'imagen' || c === 'foto');
+                if (idxLogo === -1) {
+                    idxLogo = headerCols.findIndex(c => c.includes('logo') && !c.includes('logo1'));
+                }
+                
+                // 5. PVP (Precio de Venta al Público) - Búsqueda exacta y estricta para no confundir con costos internos
+                let idxPvp = headerCols.findIndex(c => c === 'pvp');
+                if (idxPvp === -1) {
+                    idxPvp = headerCols.findIndex(c => c.startsWith('pvp') || c.endsWith('pvp'));
+                }
+                if (idxPvp === -1) {
+                    idxPvp = headerCols.findIndex(c => c.includes('pvp'));
+                }
 
-                // Fallbacks si no encuentra el encabezado explícito
+                // Fallbacks si no encuentra encabezados
                 if (idxCodigo === -1) idxCodigo = 0;
-                if (idxProducto === -1) idxProducto = 1;
-                if (idxCantidad === -1) idxCantidad = 2;
-                if (idxLogo === -1) idxLogo = 7; // Columna H por defecto
-                if (idxPvp === -1) idxPvp = 8;  // Columna I por defecto
+                if (idxProducto === -1) idxProducto = 2;
+                if (idxCantidad === -1) idxCantidad = 3;
+                if (idxLogo === -1) idxLogo = 8;
+                if (idxPvp === -1) idxPvp = 9;
 
                 lines.forEach((line, index) => {
                     if (index === 0 || !line.trim()) return;
@@ -271,20 +292,29 @@
                     const columns = parseCSVLine(line);
                     if (columns.length <= idxProducto) return;
 
-                    const codigo = columns[idxCodigo] || '';
-                    const producto = columns[idxProducto] || '';
+                    const codigo = columns[idxCodigo] ? columns[idxCodigo].trim() : '';
+                    const producto = columns[idxProducto] ? columns[idxProducto].trim() : '';
                     const cantidad = parseInt(columns[idxCantidad]) || 0;
                     
                     let logoUrl = columns[idxLogo] ? columns[idxLogo].trim() : '';
                     logoUrl = convertImageUrl(logoUrl);
                     
-                    let pvp = columns[idxPvp] || '$0.30';
-                    if (!pvp.includes('$') && !isNaN(parseFloat(pvp.replace(',', '.')))) {
-                        pvp = `$${parseFloat(pvp.replace(',', '.')).toFixed(2)}`;
+                    // Procesar y formatear el valor exacto de la columna PVP
+                    let rawPvp = (idxPvp < columns.length && columns[idxPvp]) ? columns[idxPvp].trim() : '';
+                    let pvpFormatted = '$0.30';
+                    
+                    if (rawPvp) {
+                        let cleanNum = rawPvp.replace('$', '').replace(/\s+/g, '').replace(',', '.');
+                        let parsedNum = parseFloat(cleanNum);
+                        if (!isNaN(parsedNum)) {
+                            pvpFormatted = `$${parsedNum.toFixed(2)}`;
+                        } else {
+                            pvpFormatted = rawPvp.startsWith('$') ? rawPvp : `$${rawPvp}`;
+                        }
                     }
 
-                    if (producto && producto.trim() !== '') {
-                        const prodName = producto.trim();
+                    if (producto && producto !== '') {
+                        const prodName = producto;
                         const cat = inferCategory(prodName);
                         const icon = inferIcon(prodName);
 
@@ -292,7 +322,7 @@
                             id: codigo || (index).toString().padStart(3, '0'),
                             name: prodName,
                             stock: cantidad,
-                            price: pvp,
+                            price: pvpFormatted,
                             cat: cat,
                             logo: logoUrl,
                             icon: icon,
